@@ -8,3 +8,10 @@ ES6 modules don't like running locally with file://. Must use a local server to 
  2. To use live preview open command window and type npm start
  This will run lite-server.
  Requires that node.js be installed.
+ 
+# Current tasks
+1. Getting object loader to work
+2. Making the field of falling objects even.
+
+# Credits
+Snow crystal images: www.snowcrystals.com
