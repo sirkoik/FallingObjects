@@ -1,4 +1,4 @@
-import {scene, animFunctions, THREE, loadObj} from './threeHandler.js';
+import {scene, animFunctions, THREE, loadObj, loadObjPromise} from './threeHandler.js';
 export {addObjects, addLights};
 
 let objMesh = {};
@@ -65,31 +65,36 @@ function addLights() {
 function addObjects(args) {
     let objCount = args.objCount? args.objCount : 100;
     
-    const objs = [
+    const paths = [
         {
             obj: '../resources/models/snowflake.obj',
-            map: '../resources/images/snowflake1.png'
+            map: '../resources/images/snowflake1.png',
+            normalMap: '../resources/images/snowflake1-normal.png'
         },
         {
-            obj: '../resources/images/snowflake2.obj',
-            map: '../resources/images/libbrecht.snowflake2.jpg'
+            obj: '../resources/models/snowflake2.obj',
+            map: '../resources/images/libbrecht.snowflake2.jpg',
+            normalMap: '../resources/images/libbrecht.snowflake2-normal.jpg'
         }
     ];
     
     // chain some promises? here.
     
-    loadObj('../resources/models/snowflake.obj', {obj: true}, (root) => {
-        //scene.add(root);
-        objMesh = root.children[0];
-        let texture = new THREE.TextureLoader().load('../resources/images/snowflake1.png');
-        let normalTexture = new THREE.TextureLoader().load('../resources/images/snowflake1-normal.png');
-        let material = new THREE.MeshStandardMaterial({map : texture, normalMap: normalTexture});
-        objMesh.material = material;
-        
-        objPrototypes.push(objMesh);
-        
-        for (let x = 0; x < objCount; x++) {
-            addObject('obj'+x);
-        }
-    });
+//    loadObj('../resources/models/snowflake.obj', {obj: true}, (root) => {
+//        //scene.add(root);
+//        objMesh = root.children[0];
+//        let texture = new THREE.TextureLoader().load('../resources/images/snowflake1.png');
+//        let normalTexture = new THREE.TextureLoader().load('../resources/images/snowflake1-normal.png');
+//        let material = new THREE.MeshStandardMaterial({map : texture, normalMap: normalTexture});
+//        objMesh.material = material;
+//        
+//        objPrototypes.push(objMesh);
+//        
+//        for (let x = 0; x < objCount; x++) {
+//            addObject('obj'+x);
+//        }
+//    });
+    
+    loadObjPromise(paths);
+    
 }

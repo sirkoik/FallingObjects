@@ -2,6 +2,10 @@ import * as THREE from '../resources/three.js-r112/build/three.module.js';
 import {OrbitControls} from '../resources/three.js-r112/examples/jsm/controls/OrbitControls.js';
 import {OBJLoader2} from '../resources/three.js-r112/examples/jsm/loaders/OBJLoader2.js';
 
+export {THREE};
+export {load, scene, animFunctions};
+export {loadObj, loadObjPromise};
+
 let scene = new THREE.Scene();
 let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 let renderer = new THREE.WebGLRenderer();
@@ -63,6 +67,36 @@ function loadObj(path, args, callback) {
     });
 }
 
-export {THREE};
-export {load, scene, animFunctions};
-export {loadObj};
+function loadTexture(path) {
+    return new Promise(resolve => {new THREE.TextureLoader().load(path, resolve);});
+}
+
+function loadObjPromise(paths) {
+    //const promises = [];
+    
+    const promises = paths.map(key => {
+        return loadTexture(key.obj).then(texture => {
+            alert('texture loaded');
+            //alert(texture);
+            // needs some kind of action here. It's not executing.
+        }).catch(fail => {
+            alert('Something went wrong');
+        });
+    });
+    
+    setTimeout(() => console.log(paths), 5000);
+    
+//    for (let x = 0; x < paths.length; x++) {
+//        let thisPromise = () => {
+//            return loadObj(paths[x].obj, {obj: true}, resolve).then((root) => {
+//                alert(root);
+//            });
+//        }
+//        
+//        promises.push(thisPromise);
+//    }
+        
+    return Promise.all(promises).then(result => {
+        alert('all loaded');
+    });
+}
