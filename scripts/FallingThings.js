@@ -1,8 +1,16 @@
-import {scene, animFunctions, THREE, loadObjs2} from './threeHandler.js';
-export {addObjects, addLights};
+import {scene, animFunctions, THREE, loadObjs2, debugArgs} from './threeHandler.js';
+export {loadObjects, addLights};
 
-let objMesh = {};
 let objPrototypes = [];
+let boxSize = 20;
+let objCount = 500;
+
+function loadObjects(args) {
+    if (args && args.boxSize) boxSize = args.boxSize;
+    if (args && args.objCount) objCount = args.objCount;
+    
+    addObjects();
+}
 
 function addObject(name, mesh) {
 //    let geometry = new THREE.BoxGeometry(1, 1, 1);
@@ -21,10 +29,10 @@ function addObject(name, mesh) {
     let sign3 = Math.random() >= 0.5? 1: -1;
     
     // start at a random x, y, z position within the box.
-    fallingObj.position.x = sign * Math.random() * 10; //window.innerWidth / 2;
-    fallingObj.position.z = sign2 * Math.random() * 10; //window.innerWidth / 2;
+    fallingObj.position.x = sign * Math.random() * boxSize; //window.innerWidth / 2;
+    fallingObj.position.z = sign2 * Math.random() * boxSize; //window.innerWidth / 2;
     //fallingObj.position.y = 10 + 10 * Math.random();
-    fallingObj.position.y = sign3 * 10 * Math.random();
+    fallingObj.position.y = sign3 * boxSize * Math.random();
 
     fallingObj.userData.startY = fallingObj.position.y;
     fallingObj.userData.startX = fallingObj.position.x;
@@ -46,7 +54,7 @@ function addObject(name, mesh) {
         // reset position when it goes offscreen at the bottom.
         //if (obj.position.y < -window.innerHeight / 2) obj.position.y = - window.innerHeight / 2;
         //if (obj.position.y < -10) obj.position.y = obj.userData.startY;
-        if (obj.position.y < -10) obj.position.y = 10;
+        if (obj.position.y < -boxSize) obj.position.y = boxSize;
     }
     // maybe just attach the anim function to the object's userData.
     animFunctions.push(func1);
@@ -62,9 +70,7 @@ function addLights() {
 }
 
 // add objects: import the object geometry / texture and then add x number of objects.
-function addObjects(args) {
-    let objCount = args.objCount? args.objCount : 100;
-    
+function addObjects() {
     const objInfo = [
         {
             name: 'Snowflake1',
@@ -80,30 +86,31 @@ function addObjects(args) {
         }
     ];
     
+    const objData = [];
+    objInfo.forEach(() => {objData.push({});});  
+    
     loadObjs2(objInfo).then(output => {
-        let objData = output;
-        console.log('All objects have been loaded!', objData);
-        
-        // TODO return objects instead of promises.
-        objData.map((obj, index, arr) => {
-            console.log('mesh',obj[1]);
-            
-            objMesh = obj[1].children[0];
-            let material = new THREE.MeshStandardMaterial({
-                map: obj[2],
-                normalMap: obj[3]
-            });
+        objInfo.map((obj, index, arr) => {
+            let objMesh = obj.mesh.children[0];
+            let material = {};
+            if (debugArgs.basicMaterial) {
+                material = new THREE.MeshBasicMaterial({map: obj.map});
+            } else {
+                material = new THREE.MeshStandardMaterial({
+                    map: obj.map,
+                    normalMap: obj.normalMap
+                });               
+            }
             objMesh.material = material;
             
             objPrototypes.push(objMesh);
         });
         
         for (let x = 0; x < objCount; x++) {
-            let objSample = objPrototypes[Math.round(Math.random() * objPrototypes.length)]
-            
+            let objSample = objPrototypes[Math.round(Math.random() * (objPrototypes.length - 1))]
+            console.log(Math.round(Math.random() * objPrototypes.length));
             addObject('obj'+x, objSample);
         }
-        
     });
     // chain some promises? here.
     

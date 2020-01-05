@@ -5,6 +5,7 @@ import {OBJLoader2} from '../resources/three.js-r112/examples/jsm/loaders/OBJLoa
 export {THREE};
 export {load, scene, animFunctions};
 export {loadObjs2};
+export {debugArgs};
 
 let scene = new THREE.Scene();
 let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -14,6 +15,7 @@ let controls = new OrbitControls(camera, renderer.domElement);
 let animFunctions = [];
 
 let debug = false;
+let debugArgs = {};
 let enableAnimation = true;
 
 function load(args) {
@@ -31,6 +33,7 @@ function load(args) {
 
     if (args.helpers && args.enableHelpers) args.helpers();
     if (args.debug) debug = args.debug;
+    if (args.debugArgs) debugArgs = args.debugArgs;
 
     animate();
 }
@@ -47,10 +50,14 @@ function animate() {
 }
 
 // update renderer size and camera projection matrix when the window is resized to keep everything proportionate
-window.onresize = () => {
+// courtesy https://stackoverflow.com/a/20434960/5511776
+function onWindowResize() {
+    camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
+    
     renderer.setSize(window.innerWidth, window.innerHeight);
 }
+window.addEventListener('resize', onWindowResize, false);
 
 // load an object using three.js OBJLoader2
 /*function loadObj(path, args, callback) {    
@@ -114,7 +121,7 @@ function loadObj2(path) {
             if (debug) console.log(root);
             if (debug) console.log(scene);
             
-            if (debug) alert(path + ' loaded.');
+            if (debug) console.log(path + ' loaded.');
             resolve(root);
         });
     });
@@ -130,10 +137,12 @@ function loadMap2(path) {
     return new Promise(resolve => {
         new THREE.TextureLoader().load(path, resolve);
     });
-//	return new Promise(resolve => {
-//		console.log(path + ' loaded.');
-//		resolve();
-//	});
+/*
+	return new Promise(resolve => {
+		console.log(path + ' loaded.');
+		resolve();
+	});
+*/
 }
 
 // loadObjs2: Load objects asynchronously with promises, and then 
@@ -141,16 +150,24 @@ function loadMap2(path) {
 function loadObjs2(objInfo) {
 	return new Promise((resolve, reject) => {
 		let promisesSuper = [];
+        let promisesFlat = [];
         let objects = [];
 		
 		// iterate over objInfo
 		objInfo.map((currentValue, index, arr) => {
-			let mapPromise = loadMap2(currentValue.map);
-			let normalMapPromise = loadMap2(currentValue.normalMap);
-			let meshPromise = loadObj2(currentValue.mesh);
+			let mapPromise = loadMap2(currentValue.map).then(map => {
+                objInfo[index].map = map;
+            });
+			let normalMapPromise = loadMap2(currentValue.normalMap).then(normalMap => {
+                objInfo[index].normalMap = normalMap;
+            });
+			let meshPromise = loadObj2(currentValue.mesh).then(mesh => {
+                objInfo[index].mesh = mesh;
+            });
 			
             // push all promises for this object into a sub-array of the promisesSuper array.
 			promisesSuper.push([currentValue.name, meshPromise, mapPromise, normalMapPromise]);
+			promisesFlat.push(currentValue.name, meshPromise, mapPromise, normalMapPromise);
 		});
         
         // this promise resolves each time an object is loaded.
@@ -165,11 +182,11 @@ function loadObjs2(objInfo) {
         });
         
 		// this promise resolves when all objects are loaded.
-		Promise.all(promisesSuper)
+		Promise.all(promisesFlat)
 		.then(output => {
             // TODO continue script when object has loaded.
 			//alert('all promises in promise array resolved.');
-			resolve(promisesSuper);
+			resolve(promisesFlat);
 		})
 		.catch(error => {
 			alert('Error');

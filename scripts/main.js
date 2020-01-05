@@ -1,22 +1,22 @@
 import {load as threeLoad} from './threeHandler.js';
-import {addObjects, addLights} from './FallingThings.js';
+import {loadObjects, addLights} from './FallingThings.js';
 import {setupScene} from './SceneSetup.js';
 import {addHelpers} from './Helpers.js';
 
 window.onload = () => {
     threeLoad({
         helpers: addHelpers,
-        enableHelpers: true,
+        enableHelpers: false,
         debug: true,
-        enableAnimation: true
+        enableAnimation: true,
+        debugArgs: {
+            basicMaterial: true
+        }
     });
     
     setupScene();
     
-    addObjects({
-        objCount: 200
-    });
+    loadObjects();
     
     addLights();
 }
-
