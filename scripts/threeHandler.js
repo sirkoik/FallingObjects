@@ -4,7 +4,7 @@ import {OBJLoader2} from '../resources/three.js-r112/examples/jsm/loaders/OBJLoa
 
 export {THREE};
 export {load, scene, animFunctions};
-export {loadObj, loadObjPromise};
+export {loadObjs2};
 
 let scene = new THREE.Scene();
 let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -53,7 +53,7 @@ window.onresize = () => {
 }
 
 // load an object using three.js OBJLoader2
-function loadObj(path, args, callback) {    
+/*function loadObj(path, args, callback) {    
     const objLoader = new OBJLoader2();
     objLoader.load(path, (root) => {
         if (args && args.obj) {
@@ -65,8 +65,9 @@ function loadObj(path, args, callback) {
         if (debug) console.log(root);
         if (debug) console.log(scene);
     });
-}
+}*/
 
+/*
 function loadTexture(path) {
     return new Promise(resolve => {new THREE.TextureLoader().load(path, resolve);});
 }
@@ -99,4 +100,79 @@ function loadObjPromise(paths) {
     return Promise.all(promises).then(result => {
         alert('all loaded');
     });
+}*/
+
+
+/* promise obj/map loaders */
+
+function loadObj2(path) {
+    return new Promise(resolve => {
+        const objLoader = new OBJLoader2();
+        objLoader.load(path, (root) => {
+            // TODO do something with the object.
+
+            if (debug) console.log(root);
+            if (debug) console.log(scene);
+            
+            if (debug) alert(path + ' loaded.');
+            resolve(root);
+        });
+    });
+//	return new Promise(resolve => {
+//		setTimeout(() => {
+//			console.log(path + ' loaded.');
+//			resolve();	
+//		}, Math.random() * 2000);
+//	});
+}
+
+function loadMap2(path) {
+    return new Promise(resolve => {
+        new THREE.TextureLoader().load(path, resolve);
+    });
+//	return new Promise(resolve => {
+//		console.log(path + ' loaded.');
+//		resolve();
+//	});
+}
+
+// loadObjs2: Load objects asynchronously with promises, and then 
+// resolve when all promises have fulfilled.
+function loadObjs2(objInfo) {
+	return new Promise((resolve, reject) => {
+		let promisesSuper = [];
+        let objects = [];
+		
+		// iterate over objInfo
+		objInfo.map((currentValue, index, arr) => {
+			let mapPromise = loadMap2(currentValue.map);
+			let normalMapPromise = loadMap2(currentValue.normalMap);
+			let meshPromise = loadObj2(currentValue.mesh);
+			
+            // push all promises for this object into a sub-array of the promisesSuper array.
+			promisesSuper.push([currentValue.name, meshPromise, mapPromise, normalMapPromise]);
+		});
+        
+        // this promise resolves each time an object is loaded.
+        promisesSuper.map((currentValue, index, arr) => {
+            Promise.all(currentValue).then(output => {
+                // TODO add object.
+                //alert('Object fully loaded.');
+                //console.log(output);
+                
+                //resolve(output);
+            });
+        });
+        
+		// this promise resolves when all objects are loaded.
+		Promise.all(promisesSuper)
+		.then(output => {
+            // TODO continue script when object has loaded.
+			//alert('all promises in promise array resolved.');
+			resolve(promisesSuper);
+		})
+		.catch(error => {
+			alert('Error');
+		});
+	});
 }

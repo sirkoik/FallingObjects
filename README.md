@@ -10,8 +10,9 @@ ES6 modules don't like running locally with file://. Must use a local server to 
  Requires that node.js be installed.
  
 # Current tasks
-1. Getting object loader to work
-2. Making the field of falling objects even.
+1. Getting object loader to work (working on promise implementation)
+    1. Trying to get objects instead of promises.
+2. Making the field of falling objects even. (mostly done)
 
 # Credits
 Snow crystal images: www.snowcrystals.com

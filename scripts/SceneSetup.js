@@ -1,7 +1,7 @@
-import {scene, loadObj, THREE} from './threeHandler.js'
+import {scene, THREE} from './threeHandler.js'
 
 function addGround() {
-    loadObj('../resources/models/hills.obj');
+    //loadObj('../resources/models/hills.obj');
 }
 
 function addLights() {

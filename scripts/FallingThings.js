@@ -1,15 +1,15 @@
-import {scene, animFunctions, THREE, loadObj, loadObjPromise} from './threeHandler.js';
+import {scene, animFunctions, THREE, loadObjs2} from './threeHandler.js';
 export {addObjects, addLights};
 
 let objMesh = {};
 let objPrototypes = [];
 
-function addObject(name) {
+function addObject(name, mesh) {
 //    let geometry = new THREE.BoxGeometry(1, 1, 1);
 //    let material = new THREE.MeshBasicMaterial({color: 0x00ff00});
 //    let fallingObj = new THREE.Mesh(geometry, material);
     
-    let fallingObj = objMesh.clone();
+    let fallingObj = mesh.clone();
     fallingObj.scale.set(0.1, 0.1, 0.1);
     
     fallingObj.name = name;
@@ -65,19 +65,46 @@ function addLights() {
 function addObjects(args) {
     let objCount = args.objCount? args.objCount : 100;
     
-    const paths = [
+    const objInfo = [
         {
-            obj: '../resources/models/snowflake.obj',
+            name: 'Snowflake1',
+            mesh: '../resources/models/snowflake.obj',
             map: '../resources/images/snowflake1.png',
             normalMap: '../resources/images/snowflake1-normal.png'
         },
         {
-            obj: '../resources/models/snowflake2.obj',
+            name: 'Snowflake2',
+            mesh: '../resources/models/snowflake2.obj',
             map: '../resources/images/libbrecht.snowflake2.jpg',
             normalMap: '../resources/images/libbrecht.snowflake2-normal.jpg'
         }
     ];
     
+    loadObjs2(objInfo).then(output => {
+        let objData = output;
+        console.log('All objects have been loaded!', objData);
+        
+        // TODO return objects instead of promises.
+        objData.map((obj, index, arr) => {
+            console.log('mesh',obj[1]);
+            
+            objMesh = obj[1].children[0];
+            let material = new THREE.MeshStandardMaterial({
+                map: obj[2],
+                normalMap: obj[3]
+            });
+            objMesh.material = material;
+            
+            objPrototypes.push(objMesh);
+        });
+        
+        for (let x = 0; x < objCount; x++) {
+            let objSample = objPrototypes[Math.round(Math.random() * objPrototypes.length)]
+            
+            addObject('obj'+x, objSample);
+        }
+        
+    });
     // chain some promises? here.
     
 //    loadObj('../resources/models/snowflake.obj', {obj: true}, (root) => {
@@ -95,6 +122,6 @@ function addObjects(args) {
 //        }
 //    });
     
-    loadObjPromise(paths);
+    //loadObjPromise(paths);
     
 }
