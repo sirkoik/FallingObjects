@@ -12,21 +12,27 @@ function loadObjects(args) {
     addObjects();
 }
 
+// randSign: return a random numerical sign.
+function randSign() {
+    return Math.random() >= 0.5? 1: -1;
+}
+
 function addObject(name, mesh) {
 //    let geometry = new THREE.BoxGeometry(1, 1, 1);
 //    let material = new THREE.MeshBasicMaterial({color: 0x00ff00});
 //    let fallingObj = new THREE.Mesh(geometry, material);
     
     let fallingObj = mesh.clone();
-    fallingObj.scale.set(0.1, 0.1, 0.1);
+    let randScale = 0.03 * Math.random();
+    fallingObj.scale.set(0.12 - randScale, 0.12 - randScale, 0.12 - randScale);
     
     fallingObj.name = name;
     scene.add(fallingObj);
 
     // random x position constrained within window.
-    let sign  = Math.random() >= 0.5? 1: -1;
-    let sign2 = Math.random() >= 0.5? 1: -1;
-    let sign3 = Math.random() >= 0.5? 1: -1;
+    let sign  = randSign();
+    let sign2 = randSign();
+    let sign3 = randSign();
     
     // start at a random x, y, z position within the box.
     fallingObj.position.x = sign * Math.random() * boxSize; //window.innerWidth / 2;
@@ -38,6 +44,7 @@ function addObject(name, mesh) {
     fallingObj.userData.startX = fallingObj.position.x;
     fallingObj.userData.startZ = fallingObj.position.z;
 
+    // hard to say if randomizing the sign of each rotational velocity element looks better or not.
     fallingObj.userData.rotation = [Math.random() * 0.01, Math.random() * 0.01, Math.random() * 0.01];
 
     // animation function for this object.
@@ -112,23 +119,4 @@ function addObjects() {
             addObject('obj'+x, objSample);
         }
     });
-    // chain some promises? here.
-    
-//    loadObj('../resources/models/snowflake.obj', {obj: true}, (root) => {
-//        //scene.add(root);
-//        objMesh = root.children[0];
-//        let texture = new THREE.TextureLoader().load('../resources/images/snowflake1.png');
-//        let normalTexture = new THREE.TextureLoader().load('../resources/images/snowflake1-normal.png');
-//        let material = new THREE.MeshStandardMaterial({map : texture, normalMap: normalTexture});
-//        objMesh.material = material;
-//        
-//        objPrototypes.push(objMesh);
-//        
-//        for (let x = 0; x < objCount; x++) {
-//            addObject('obj'+x);
-//        }
-//    });
-    
-    //loadObjPromise(paths);
-    
 }

@@ -18,6 +18,15 @@ ES6 modules don't like running locally with file://. Must use a local server to 
     3. Make objects fade in / fade out if they spawn within the viewport.
 3. 3d lighting / bump maps. Bump maps can load, but I need to set up lights that can use them (right now I'm just using ambient light with a basic material)
 4. (lower priority) Start running the animation before all snowflake models have loaded. Right now the Promises make sure that everything is loaded before starting the animation.
+5. Add more snowflake models.
+
+# Bugs
+1. Need to remove three.js from the .gitignore, otherwise nothing will work because it has modules that are referenced by the script.
+
+# Parameters
+* Randomizing the sign of the orientation doesn't seem to produce a better visual result, because snowflakes usually follow a current.
+* Randomizing the scale of the snowflakes doesn't seem to make things look much more interesting.
+* Possible to use a snowy IBL background with bump maps for the snowflakes? Making ambient light bluer doesn't seem to make it look better.
 
 # Credits
 Snow crystal images: www.snowcrystals.com
