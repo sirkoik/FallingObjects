@@ -5,44 +5,59 @@ import {OBJLoader2} from '../resources/three.js-r112/examples/jsm/loaders/OBJLoa
 export {THREE};
 export {load, scene, animFunctions};
 export {loadObjs2};
-export {debugArgs};
+export {sceneArgs, debugArgs};
+export {pmremGenerator}
+export {renderer};
 
 let scene = new THREE.Scene();
 let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 let renderer = new THREE.WebGLRenderer({
     antialias: true
 });
+
+let pmremGenerator = new THREE.PMREMGenerator(renderer);
+pmremGenerator.compileEquirectangularShader();
+
 let controls = new OrbitControls(camera, renderer.domElement);
 
 let animFunctions = [];
 
 let debug = false;
-let debugArgs = {};
+let sceneArgs, debugArgs = {};
 let enableAnimation = true;
 
 function load(args) {
+    if (args) sceneArgs = args;
     if (args && args.enableAnimation !== undefined) enableAnimation = args.enableAnimation;
     
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
 
-    //camera.position.z = 5;
-    camera.position.x = 10;
-    camera.position.y = 7;
-    camera.position.z = 10;
+//    camera.position.x = 10;
+//    camera.position.y = -2;
+//    camera.position.z = 10;
 
+    camera.position.set(1, -2 , 1);
     camera.lookAt(new THREE.Vector3(0, 0, 0));
 
     if (args.helpers && args.enableHelpers) args.helpers();
     if (args.debug) debug = args.debug;
     if (args.debugArgs) debugArgs = args.debugArgs;
 
+    if (args.autoRotate) {
+        controls.autoRotate = true;
+        if (args.autoRotateSpeed) controls.autoRotateSpeed = args.autoRotateSpeed;
+    }
+    
     animate();
 }
 
 function animate() {
     requestAnimationFrame(animate);
 
+    // update controls, including auto-rotation
+    controls.update();
+    
     // run each custom animation function.
     if (enableAnimation) {for (var x = 0; x < animFunctions.length; x++) {
         animFunctions[x]();
@@ -61,59 +76,10 @@ function onWindowResize() {
 }
 window.addEventListener('resize', onWindowResize, false);
 
-// load an object using three.js OBJLoader2
-/*function loadObj(path, args, callback) {    
-    const objLoader = new OBJLoader2();
-    objLoader.load(path, (root) => {
-        if (args && args.obj) {
-            callback(root);
-        } else {
-            scene.add(root);
-        }
-        
-        if (debug) console.log(root);
-        if (debug) console.log(scene);
-    });
-}*/
-
-/*
-function loadTexture(path) {
-    return new Promise(resolve => {new THREE.TextureLoader().load(path, resolve);});
-}
-
-function loadObjPromise(paths) {
-    //const promises = [];
-    
-    const promises = paths.map(key => {
-        return loadTexture(key.obj).then(texture => {
-            alert('texture loaded');
-            //alert(texture);
-            // needs some kind of action here. It's not executing.
-        }).catch(fail => {
-            alert('Something went wrong');
-        });
-    });
-    
-    setTimeout(() => console.log(paths), 5000);
-    
-//    for (let x = 0; x < paths.length; x++) {
-//        let thisPromise = () => {
-//            return loadObj(paths[x].obj, {obj: true}, resolve).then((root) => {
-//                alert(root);
-//            });
-//        }
-//        
-//        promises.push(thisPromise);
-//    }
-        
-    return Promise.all(promises).then(result => {
-        alert('all loaded');
-    });
-}*/
-
 
 /* promise obj/map loaders */
 
+// loadObj2: Load an object with OBJLoader2.
 function loadObj2(path) {
     return new Promise(resolve => {
         const objLoader = new OBJLoader2();
@@ -127,24 +93,13 @@ function loadObj2(path) {
             resolve(root);
         });
     });
-//	return new Promise(resolve => {
-//		setTimeout(() => {
-//			console.log(path + ' loaded.');
-//			resolve();	
-//		}, Math.random() * 2000);
-//	});
 }
 
+// loadMap2: Load a texture map.
 function loadMap2(path) {
     return new Promise(resolve => {
         new THREE.TextureLoader().load(path, resolve);
     });
-/*
-	return new Promise(resolve => {
-		console.log(path + ' loaded.');
-		resolve();
-	});
-*/
 }
 
 // loadObjs2: Load objects asynchronously with promises, and then 

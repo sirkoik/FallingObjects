@@ -1,4 +1,6 @@
-import {scene, animFunctions, THREE, loadObjs2, debugArgs} from './threeHandler.js';
+import {scene, animFunctions, THREE, loadObjs2, sceneArgs, debugArgs} from './threeHandler.js';
+import {hdrCubeRenderTarget} from './SceneSetup.js';
+
 export {loadObjects, addLights};
 
 let objPrototypes = [];
@@ -23,8 +25,9 @@ function addObject(name, mesh) {
 //    let fallingObj = new THREE.Mesh(geometry, material);
     
     let fallingObj = mesh.clone();
-    let randScale = 0.03 * Math.random();
-    fallingObj.scale.set(0.12 - randScale, 0.12 - randScale, 0.12 - randScale);
+    let baseScale = sceneArgs.baseScale? sceneArgs.baseScale : 0.12;
+    let randScale = (baseScale / 4) * Math.random();
+    fallingObj.scale.set(baseScale - randScale, baseScale - randScale, baseScale - randScale);
     
     fallingObj.name = name;
     scene.add(fallingObj);
@@ -84,13 +87,13 @@ function addObjects() {
             mesh: '../resources/models/snowflake.obj',
             map: '../resources/images/snowflake1.png',
             normalMap: '../resources/images/snowflake1-normal.png'
-        },
+        }/*,
         {
             name: 'Snowflake2',
             mesh: '../resources/models/snowflake2.obj',
             map: '../resources/images/libbrecht.snowflake2.jpg',
             normalMap: '../resources/images/libbrecht.snowflake2-normal.jpg'
-        }
+        }*/
     ];
     
     const objData = [];
@@ -105,8 +108,18 @@ function addObjects() {
             } else {
                 material = new THREE.MeshStandardMaterial({
                     map: obj.map,
-                    normalMap: obj.normalMap
-                });               
+                    normalMap: obj.normalMap,
+                    envMap: hdrCubeRenderTarget.texture,
+                    transparent: true,
+                    opacity: 0.9
+                });       
+// This doesn't work for some reason.                
+//                material = new THREE.MeshPhongMaterial({
+//                    color: 0xffffff,
+//                    envMap: hdrCubeRenderTarget.texture,
+//                    refractionRatio: 0.98,
+//                    reflectivity: 0.8
+//                });
             }
             objMesh.material = material;
             
@@ -115,7 +128,7 @@ function addObjects() {
         
         for (let x = 0; x < objCount; x++) {
             let objSample = objPrototypes[Math.round(Math.random() * (objPrototypes.length - 1))]
-            console.log(Math.round(Math.random() * objPrototypes.length));
+            //console.log(Math.round(Math.random() * objPrototypes.length));
             addObject('obj'+x, objSample);
         }
     });
