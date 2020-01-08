@@ -87,13 +87,13 @@ function addObjects() {
             mesh: '../resources/models/snowflake.obj',
             map: '../resources/images/snowflake1.png',
             normalMap: '../resources/images/snowflake1-normal.png'
-        }/*,
+        },
         {
             name: 'Snowflake2',
             mesh: '../resources/models/snowflake2.obj',
             map: '../resources/images/libbrecht.snowflake2.jpg',
             normalMap: '../resources/images/libbrecht.snowflake2-normal.jpg'
-        }*/
+        }
     ];
     
     const objData = [];

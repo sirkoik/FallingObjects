@@ -25,9 +25,29 @@ function addFog() {
     scene.fog = new THREE.Fog(color, near, far);
 }
 
+const envs = {
+    'winterForest': [
+        'Winter_Forest/WinterForest_Env.hdr',
+        'Winter_Forest/WinterForest_8k.jpg'
+    ],
+    'snowyPark': [
+        'Snowy_Park/snowy_park_01_1k.hdr',
+        'Snowy_Park/snowy_park_01.jpg'
+    ],
+    'snowyForestPath': [
+        'Snowy_Forest_Path/snowy_forest_path_02_1k.hdr',
+        'Snowy_Forest_Path/white.png',
+        'Snowy_Forest_Path/snowy_forest_path_02_e.jpg'
+    ]
+};
+
+let sphereEnvMap = 1;
+
 function addBg(callback) {
+    let bg = envs['snowyForestPath'];
+    
     //console.log(RGBELoader);
-    new RGBELoader().setDataType(THREE.UnsignedByteType).load('../resources/environments/Winter_Forest/WinterForest_Env.hdr', (hdrEquiRect, textureData) => {
+    new RGBELoader().setDataType(THREE.UnsignedByteType).load('../resources/environments/' + bg[0], (hdrEquiRect, textureData) => {
         textureData.exposure = 100;
         hdrCubeRenderTarget = pmremGenerator.fromEquirectangular(hdrEquiRect);
         pmremGenerator.compileCubemapShader();
@@ -37,23 +57,15 @@ function addBg(callback) {
     });
     
     // add an environment map sphere that is of higher resolution than that in the RGBELoader.
-    let geometry = new THREE.SphereBufferGeometry(500, 60, 40);
-    geometry.scale(-1, 1, 1);
-    
-    let texture = new THREE.TextureLoader().load('../resources/environments/Winter_Forest/WinterForest_8k.jpg');
-    let material = new THREE.MeshBasicMaterial({map: texture});
-    let mesh = new THREE.Mesh(geometry, material);
-    scene.add(mesh);
-    
-/*    new RGBELoader().load('../resources/envifronments/Winter_Forest/WinterForest_Ref.hdr', (texture, textureData) => {
-        texture.encoding = THREE.RGBEEncoding;
-        const cubeMap = new THREE.EquirectangularToCubeGenerator(texture, {resolution: 3200, type: THREE.UnsignedByteType});
-        bg = cubeMap.renderTarget;
-        cubeMapTexture = cubemap.update(renderer);
-        texture.dispose();
-    
-        callback();
-    });*/
+    if (sphereEnvMap) {
+        let geometry = new THREE.SphereBufferGeometry(500, 60, 40);
+        geometry.scale(-1, 1, 1);
+
+        let texture = new THREE.TextureLoader().load('../resources/environments/' + bg[1]);
+        let material = new THREE.MeshBasicMaterial({map: texture});
+        let mesh = new THREE.Mesh(geometry, material);
+        scene.add(mesh);
+    }
 }
 
 function setupScene(callback) {

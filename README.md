@@ -31,4 +31,6 @@ ES6 modules don't like running locally with file://. Must use a local server to 
 
 # Credits
 Snow crystal images: www.snowcrystals.com
-Winter forest: http://hdrlabs.com/sibl/archive.html, Blochi (taken in Slovakia)
+Winter forest (Slovakia): Blochi, http://hdrlabs.com/sibl/archive.html, 
+Snowy park: Oliksiy Yakovlyev, https://hdrihaven.com/hdri/?c=nature&h=snowy_park_01
+Snowy forest path: Oliksiy Yakovlyev, https://hdrihaven.com/hdri/?c=nature&h=snowy_forest_path_02
