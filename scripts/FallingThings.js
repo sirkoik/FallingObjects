@@ -6,6 +6,7 @@ export {loadObjects, addLights};
 let objPrototypes = [];
 let boxSize = 20;
 let objCount = 500;
+let maxOpacity = 0.8;
 
 function loadObjects(args) {
     if (args && args.boxSize) boxSize = args.boxSize;
@@ -85,8 +86,8 @@ function addObject(name, mesh) {
         
         if (obj.userData.fadingIn == true) {
             obj.material.opacity += 0.01;
-            if (obj.material.opacity >= 1) {
-                obj.material.opacity = 1;
+            if (obj.material.opacity >= maxOpacity) {
+                obj.material.opacity = maxOpacity;
                 obj.userData.fadingIn = false;
             }
         }
@@ -118,7 +119,19 @@ function addObjects() {
             mesh: '../resources/models/snowflake2.obj',
             map: '../resources/images/libbrecht.snowflake2.jpg',
             normalMap: '../resources/images/libbrecht.snowflake2-normal.jpg'
-        }
+        },
+        {
+            name: 'Snowflake3',
+            mesh: '../resources/models/snowflake3.obj',
+            map: '../resources/images/snowflake4.jpg',
+            normalMap: '../resources/images/snowflake4-normal.jpg'
+        },
+        {
+            name: 'Snowflake4',
+            mesh: '../resources/models/snowflake4.obj',
+            map: '../resources/images/snowflake3.jpg',
+            normalMap: '../resources/images/snowflake3-normal.jpg'
+        }        
     ];
     
     const objData = [];
@@ -152,7 +165,7 @@ function addObjects() {
         });
         
         for (let x = 0; x < objCount; x++) {
-            let objSample = objPrototypes[Math.round(Math.random() * (objPrototypes.length - 1))]
+            let objSample = objPrototypes[Math.floor(Math.random() * objPrototypes.length)]
             //console.log(Math.round(Math.random() * objPrototypes.length));
             addObject('obj'+x, objSample);
         }

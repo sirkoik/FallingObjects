@@ -3,6 +3,9 @@ import {RGBELoader} from '../resources/three.js-r112/examples/jsm/loaders/RGBELo
 
 export {hdrCubeRenderTarget};
 
+// display non-HDR sphere environment map.
+let sphereEnvMap = 0;
+
 let hdrCubeRenderTarget = {};
 
 function addGround() {
@@ -36,19 +39,20 @@ const envs = {
     ],
     'snowyForestPath': [
         'Snowy_Forest_Path/snowy_forest_path_02_1k.hdr',
-        'Snowy_Forest_Path/white.png',
+//        'Snowy_Forest_Path/white.png',
         'Snowy_Forest_Path/snowy_forest_path_02_e.jpg'
     ]
 };
 
-let sphereEnvMap = 1;
+
 
 function addBg(callback) {
     let bg = envs['snowyForestPath'];
     
     //console.log(RGBELoader);
     new RGBELoader().setDataType(THREE.UnsignedByteType).load('../resources/environments/' + bg[0], (hdrEquiRect, textureData) => {
-        textureData.exposure = 100;
+        console.log('textureData', textureData);
+        textureData.gamma = 1;
         hdrCubeRenderTarget = pmremGenerator.fromEquirectangular(hdrEquiRect);
         pmremGenerator.compileCubemapShader();
         scene.background = hdrCubeRenderTarget.texture;
