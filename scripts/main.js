@@ -21,7 +21,9 @@ window.onload = () => {
     });
     
     setupScene(() => {
-        loadObjects();
+        loadObjects({
+            objCount: 500
+        });
     });
     
     

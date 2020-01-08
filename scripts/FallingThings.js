@@ -25,6 +25,8 @@ function addObject(name, mesh) {
 //    let fallingObj = new THREE.Mesh(geometry, material);
     
     let fallingObj = mesh.clone();
+    fallingObj.material = new THREE.MeshStandardMaterial().copy(fallingObj.material);
+    
     let baseScale = sceneArgs.baseScale? sceneArgs.baseScale : 0.12;
     let randScale = (baseScale / 4) * Math.random();
     fallingObj.scale.set(baseScale - randScale, baseScale - randScale, baseScale - randScale);
@@ -50,6 +52,9 @@ function addObject(name, mesh) {
     // hard to say if randomizing the sign of each rotational velocity element looks better or not.
     fallingObj.userData.rotation = [Math.random() * 0.01, Math.random() * 0.01, Math.random() * 0.01];
 
+    fallingObj.userData.fadingIn = true;
+    fallingObj.userData.fadingOut = false;
+        
     // animation function for this object.
     let func1 = () => {
         let obj = scene.getObjectByName(name);
@@ -62,9 +67,29 @@ function addObject(name, mesh) {
         obj.position.z = fallingObj.userData.startZ + Math.sin(obj.position.z);
 
         // reset position when it goes offscreen at the bottom.
+        // also, fade out at the bottom, and fade in at the top.
         //if (obj.position.y < -window.innerHeight / 2) obj.position.y = - window.innerHeight / 2;
         //if (obj.position.y < -10) obj.position.y = obj.userData.startY;
-        if (obj.position.y < -boxSize) obj.position.y = boxSize;
+        if (obj.position.y < -boxSize) {
+            //obj.position.y = boxSize;
+            //obj.material.opacity = 0;
+            //obj.userData.fadingIn = true;
+            obj.material.opacity -= 0.01;
+            
+            if (obj.material.opacity <= 0) {
+                obj.material.opacity = 0;
+                obj.position.y = boxSize;
+                obj.userData.fadingIn = true;
+            }
+        }
+        
+        if (obj.userData.fadingIn == true) {
+            obj.material.opacity += 0.01;
+            if (obj.material.opacity >= 1) {
+                obj.material.opacity = 1;
+                obj.userData.fadingIn = false;
+            }
+        }
     }
     // maybe just attach the anim function to the object's userData.
     animFunctions.push(func1);
@@ -110,8 +135,8 @@ function addObjects() {
                     map: obj.map,
                     normalMap: obj.normalMap,
                     envMap: hdrCubeRenderTarget.texture,
-                    transparent: true,
-                    opacity: 0.9
+                    transparent: true, // important for fading in / out
+                    opacity: 0 //0.9 // start out invisible, then fade in.
                 });       
 // This doesn't work for some reason.                
 //                material = new THREE.MeshPhongMaterial({
@@ -131,5 +156,7 @@ function addObjects() {
             //console.log(Math.round(Math.random() * objPrototypes.length));
             addObject('obj'+x, objSample);
         }
+        
+        console.log('scene', scene)
     });
 }

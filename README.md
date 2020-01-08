@@ -14,7 +14,7 @@ ES6 modules don't like running locally with file://. Must use a local server to 
     <s>1. Trying to get objects instead of promises.</s>
 2. Making the field of falling objects even. (mostly done)
     1. Some objects seem to jump around.
-    2. Make objects fade in / fade out if they spawn within the viewport.
+    2. <s>Make objects fade in / fade out if they spawn within the viewport.</s>
 3. 3d lighting / normal maps. Using "PMREM" to combine HDRi lighting with snowflakes. Looks good but I want to make the bg texture higher res.
     1. Make bg texture higher res.
     2. Re-implement fog.
