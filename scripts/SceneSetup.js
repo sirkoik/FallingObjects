@@ -38,7 +38,8 @@ const envs = {
         'Snowy_Park/snowy_park_01.jpg'
     ],
     'snowyForestPath': [
-        'Snowy_Forest_Path/snowy_forest_path_02_1k.hdr',
+        'Snowy_Forest_Path/snowy_forest_path_02_2k.hdr',
+//        'Snowy_Forest_Path/snowy_forest_path_02_1k.hdr',
 //        'Snowy_Forest_Path/white.png',
         'Snowy_Forest_Path/snowy_forest_path_02_e.jpg'
     ]
