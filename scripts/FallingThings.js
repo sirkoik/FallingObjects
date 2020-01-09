@@ -11,6 +11,7 @@ let maxOpacity = 0.8;
 function loadObjects(args) {
     if (args && args.boxSize) boxSize = args.boxSize;
     if (args && args.objCount) objCount = args.objCount;
+    if (args && args.maxOpacity) objCount = args.maxOpacity;
     
     addObjects();
 }
@@ -148,6 +149,8 @@ function addObjects() {
                     map: obj.map,
                     normalMap: obj.normalMap,
                     envMap: hdrCubeRenderTarget.texture,
+                    metalness: 0.5,
+                    roughness: 0.5,
                     transparent: true, // important for fading in / out
                     opacity: 0 //0.9 // start out invisible, then fade in.
                 });       
@@ -160,6 +163,7 @@ function addObjects() {
 //                });
             }
             objMesh.material = material;
+            objMesh.material.needsUpdate = true;
             
             objPrototypes.push(objMesh);
         });

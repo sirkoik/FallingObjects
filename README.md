@@ -20,9 +20,12 @@ ES6 modules don't like running locally with file://. Must use a local server to 
     2. Re-implement fog.
 4. (lower priority) Start running the animation before all snowflake models have loaded. Right now the Promises make sure that everything is loaded before starting the animation.
 5. Add more snowflake models.
+6. <s>Add bloom effect. https://threejs.org/examples/webgl_postprocessing_unreal_bloom.html</s>
 
 # Bugs
-1. Need to remove three.js from the .gitignore, otherwise nothing will work because it has modules that are referenced by the script.
+1. Convert equirectangular map to a cubemap. This will enable more customizable HDRI. Instructions at the end of this page:
+https://threejsfundamentals.org/threejs/lessons/threejs-backgrounds.html
+1. The snowflakes still look dark and don't seem to reflect light from the map, or if they're doing it, it's very faint.
 
 # Parameters
 * Randomizing the sign of the orientation doesn't seem to produce a better visual result, because snowflakes usually follow a current.

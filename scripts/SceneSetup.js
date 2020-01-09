@@ -38,6 +38,7 @@ const envs = {
         'Snowy_Park/snowy_park_01.jpg'
     ],
     'snowyForestPath': [
+//        'Snowy_Forest_Path/snowy_forest_path_02_4k.hdr',
         'Snowy_Forest_Path/snowy_forest_path_02_2k.hdr',
 //        'Snowy_Forest_Path/snowy_forest_path_02_1k.hdr',
 //        'Snowy_Forest_Path/white.png',
@@ -51,15 +52,23 @@ function addBg(callback) {
     let bg = envs['snowyForestPath'];
     
     //console.log(RGBELoader);
-    new RGBELoader().setDataType(THREE.UnsignedByteType).load('../resources/environments/' + bg[0], (hdrEquiRect, textureData) => {
-        console.log('textureData', textureData);
-        textureData.gamma = 1;
-        hdrCubeRenderTarget = pmremGenerator.fromEquirectangular(hdrEquiRect);
-        pmremGenerator.compileCubemapShader();
-        scene.background = hdrCubeRenderTarget.texture;
-        hdrCubeRenderTarget.mapping = THREE.CubeRefractionMapping;
-        callback();
-    });
+    new RGBELoader().setDataType(THREE.UnsignedByteType).load(
+        '../resources/environments/' + bg[0], 
+        (hdrEquiRect, textureData) => {
+            hdrCubeRenderTarget = pmremGenerator.fromEquirectangular(hdrEquiRect);
+            pmremGenerator.compileCubemapShader();
+            scene.background = hdrCubeRenderTarget.texture;
+            //scene.background = new THREE.Color(0x000000);
+            //hdrCubeRenderTarget.mapping = THREE.CubeRefractionMapping;
+            renderer.toneMappingExposure = 0.4;
+            callback();
+        },
+        progressEvent => {
+            // TODO implement progress event.
+            let prog = Math.round(progressEvent.lengthComputable? 100 * progressEvent.loaded / progressEvent.total : 0);
+            //console.log(prog);
+        }
+    );
     
     // add an environment map sphere that is of higher resolution than that in the RGBELoader.
     if (sphereEnvMap) {
@@ -71,6 +80,7 @@ function addBg(callback) {
         let mesh = new THREE.Mesh(geometry, material);
         scene.add(mesh);
     }
+
 }
 
 function setupScene(callback) {
