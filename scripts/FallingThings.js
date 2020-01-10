@@ -8,6 +8,35 @@ let boxSize = 20;
 let objCount = 500;
 let maxOpacity = 0.8;
 
+// object info, such as meshes, textures, etc.
+const objInfo = [
+    {
+        name: 'Snowflake1',
+        mesh: '../resources/models/snowflake.obj',
+        map: '../resources/images/snowflake1.png',
+        normalMap: '../resources/images/snowflake1-normal.png'
+    },
+    {
+        name: 'Snowflake2',
+        mesh: '../resources/models/snowflake2.obj',
+        map: '../resources/images/libbrecht.snowflake2.jpg',
+        normalMap: '../resources/images/libbrecht.snowflake2-normal.jpg'
+    },
+    {
+        name: 'Snowflake3',
+        mesh: '../resources/models/snowflake3.obj',
+        map: '../resources/images/snowflake4.jpg',
+        normalMap: '../resources/images/snowflake4-normal.jpg'
+    },
+    {
+        name: 'Snowflake4',
+        mesh: '../resources/models/snowflake4.obj',
+        map: '../resources/images/snowflake3.jpg',
+        normalMap: '../resources/images/snowflake3-normal.jpg'
+    }        
+];
+
+// loadObjects: load all the objects
 function loadObjects(args) {
     if (args && args.boxSize) boxSize = args.boxSize;
     if (args && args.objCount) objCount = args.objCount;
@@ -21,6 +50,7 @@ function randSign() {
     return Math.random() >= 0.5? 1: -1;
 }
 
+// addObject: add a single object to the scene, with its own unique mesh, texture, and animation function.
 function addObject(name, mesh) {
 //    let geometry = new THREE.BoxGeometry(1, 1, 1);
 //    let material = new THREE.MeshBasicMaterial({color: 0x00ff00});
@@ -93,48 +123,23 @@ function addObject(name, mesh) {
             }
         }
     }
-    // maybe just attach the anim function to the object's userData.
+    
+    // TODO maybe just attach the anim function to the object's userData.
     animFunctions.push(func1);
 
     //console.log(cube);
     //console.log(scene);
 }
 
+// addLights: Add some lights. Not in use at the moment.
 function addLights() {
     var light = new THREE.PointLight( 0xff0000, 1, 100 );
     light.position.set( 50, 50, 50 );
     scene.add( light );    
 }
 
-// add objects: import the object geometry / texture and then add x number of objects.
+// addObjects: load the object geometry / texture and then add x number of objects.
 function addObjects() {
-    const objInfo = [
-        {
-            name: 'Snowflake1',
-            mesh: '../resources/models/snowflake.obj',
-            map: '../resources/images/snowflake1.png',
-            normalMap: '../resources/images/snowflake1-normal.png'
-        },
-        {
-            name: 'Snowflake2',
-            mesh: '../resources/models/snowflake2.obj',
-            map: '../resources/images/libbrecht.snowflake2.jpg',
-            normalMap: '../resources/images/libbrecht.snowflake2-normal.jpg'
-        },
-        {
-            name: 'Snowflake3',
-            mesh: '../resources/models/snowflake3.obj',
-            map: '../resources/images/snowflake4.jpg',
-            normalMap: '../resources/images/snowflake4-normal.jpg'
-        },
-        {
-            name: 'Snowflake4',
-            mesh: '../resources/models/snowflake4.obj',
-            map: '../resources/images/snowflake3.jpg',
-            normalMap: '../resources/images/snowflake3-normal.jpg'
-        }        
-    ];
-    
     const objData = [];
     objInfo.forEach(() => {objData.push({});});  
     
@@ -152,7 +157,7 @@ function addObjects() {
                     metalness: 0.5,
                     roughness: 0.5,
                     transparent: true, // important for fading in / out
-                    opacity: 0 //0.9 // start out invisible, then fade in.
+                    opacity: 0 // start out invisible, then fade in.
                 });       
 // This doesn't work for some reason.                
 //                material = new THREE.MeshPhongMaterial({
@@ -168,6 +173,7 @@ function addObjects() {
             objPrototypes.push(objMesh);
         });
         
+        // select objects at random from the prototypes array.
         for (let x = 0; x < objCount; x++) {
             let objSample = objPrototypes[Math.floor(Math.random() * objPrototypes.length)]
             //console.log(Math.round(Math.random() * objPrototypes.length));

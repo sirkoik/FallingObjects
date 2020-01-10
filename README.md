@@ -25,7 +25,7 @@ ES6 modules don't like running locally with file://. Must use a local server to 
 # Bugs
 1. Convert equirectangular map to a cubemap. This will enable more customizable HDRI. Instructions at the end of this page:
 https://threejsfundamentals.org/threejs/lessons/threejs-backgrounds.html
-1. The snowflakes still look dark and don't seem to reflect light from the map, or if they're doing it, it's very faint.
+1. The snowflakes still look dark and don't seem to reflect light from the map, or if they're doing it, it's very faint. Try to get them to reflect light in a way similar to this example: https://threejs.org/examples/webgl_materials_variations_standard.html
 
 # Parameters
 * Randomizing the sign of the orientation doesn't seem to produce a better visual result, because snowflakes usually follow a current.
@@ -37,3 +37,6 @@ Snow crystal images: www.snowcrystals.com
 Winter forest (Slovakia): Blochi, http://hdrlabs.com/sibl/archive.html, 
 Snowy park: Oliksiy Yakovlyev, https://hdrihaven.com/hdri/?c=nature&h=snowy_park_01
 Snowy forest path: Oliksiy Yakovlyev, https://hdrihaven.com/hdri/?c=nature&h=snowy_forest_path_02
+
+# Ideas
+1. <a href="https://threejs.org/examples/?q=materials#webgl_materials_cubemap_balls_refraction">WebGL Cube refraction demo</a>: This one has spheres that refract the environment. Snowflakes might look nice, or might look dark.

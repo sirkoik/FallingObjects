@@ -1,10 +1,14 @@
 import {load as threeLoad} from './threeHandler.js';
 import {loadObjects, addLights} from './FallingThings.js';
-import {setupScene, } from './SceneSetup.js';
-import {addHelpers} from './Helpers.js';
+import {setupScene} from './SceneSetup.js';
+import {addHelpers, addDebugSphere} from './Helpers.js';
 
 window.onload = () => {
     threeLoad({
+        camera: {
+            x: 1, y: 0, z: 1
+        },
+        
         helpers: addHelpers,
         enableHelpers: false,
         debug: false,
@@ -16,7 +20,9 @@ window.onload = () => {
         baseScale: 0.15,
         
         debugArgs: {
-            basicMaterial: false
+            basicMaterial: false,
+            enableDAT: true,
+            debugSphere: true
         }
     });
     
@@ -29,4 +35,6 @@ window.onload = () => {
     
     
     addLights();
+    
+    addDebugSphere();
 }

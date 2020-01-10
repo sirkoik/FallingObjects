@@ -23,4 +23,14 @@ function addHelpers() {
     addBoxHelper();
 }
 
-export {addHelpers}
+function addDebugSphere() {
+    let size = 50;
+    let geometry = new THREE.SphereGeometry(size, size, size);
+    let material = new THREE.MeshNormalMaterial();
+    
+    let mesh = new THREE.Mesh(geometry, material);
+    console.log(mesh);
+    scene.add(mesh);
+}
+
+export {addHelpers, addDebugSphere}

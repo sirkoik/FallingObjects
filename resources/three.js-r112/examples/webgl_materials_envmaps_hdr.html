@@ -55,7 +55,7 @@
 				var mainLight = new THREE.PointLight( 0xffffff, 50, 0, 2 );
 				envScene.add( mainLight );
 
-				var lightMaterial = new THREE.MeshLambertMaterial( { color: 0x000000, emissive: 0xffffff, emissiveIntensity: 10 } );
+				var lightMaterial = new THREE.MeshLambertMaterial( { color: 0x000000, emissive: 0xffffff, emissiveIntensity: 1000 } );
 
 				var light1 = new THREE.Mesh( geometry, lightMaterial );
 				light1.position.set( - 5, 2, 0 );
