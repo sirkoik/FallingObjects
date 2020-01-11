@@ -17,6 +17,16 @@ function addLights() {
     scene.add(light);
     
     scene.background = new THREE.Color(0xffffff);
+    
+    // pointLight to illuminate snowflakes.
+    // this is critical to making the scene look really nice.
+    // Not sure whether positioning the light toward the sunlight in the HDR or at the origin looks better.
+    // Positioning toward the sunlight is more realistic but makes the snowflakes look darker.
+    // Positioning toward the origin might still be realistic because of the way ice refracts light.
+    let pointLight = new THREE.PointLight(0xffffff, 5);
+    //pointLight.position.set(10, 5, 10);
+    pointLight.castShadow = true;
+    scene.add(pointLight);
 }
 
 // add distance fog

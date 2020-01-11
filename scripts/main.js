@@ -19,6 +19,8 @@ window.onload = () => {
         
         baseScale: 0.15,
         
+        objsReceiveShadow: true,
+        
         debugArgs: {
             basicMaterial: false,
             enableDAT: true,
@@ -36,5 +38,5 @@ window.onload = () => {
     
     addLights();
     
-    addDebugSphere();
-}
+    //addDebugSphere();
+};
