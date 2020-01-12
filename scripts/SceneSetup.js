@@ -85,7 +85,7 @@ function addBg(callback) {
         let geometry = new THREE.SphereBufferGeometry(500, 60, 40);
         geometry.scale(-1, 1, 1);
 
-        let texture = new THREE.TextureLoader().load('../resources/environments/' + bg[1]);
+        let texture = new THREE.TextureLoader().load('./resources/environments/' + bg[1]);
         let material = new THREE.MeshBasicMaterial({map: texture});
         let mesh = new THREE.Mesh(geometry, material);
         scene.add(mesh);
