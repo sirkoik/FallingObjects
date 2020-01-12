@@ -25,7 +25,7 @@ function addLights() {
     // Positioning toward the origin might still be realistic because of the way ice refracts light.
     let pointLight = new THREE.PointLight(0xffffff, 5);
     //pointLight.position.set(10, 5, 10);
-    pointLight.castShadow = true;
+    //pointLight.castShadow = true;
     scene.add(pointLight);
 }
 

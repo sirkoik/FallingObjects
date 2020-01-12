@@ -170,7 +170,7 @@ function addObjects() {
             
             // will this object receive shadows cast by other objects from the light?
             // if set to true, the scene looks highly realistic, but requires a fast GPU to render reasonably quickly.
-            objMesh.receiveShadow = sceneArgs.objsReceiveShadow? sceneArgs.objsReceiveShadow : false;
+            //objMesh.receiveShadow = sceneArgs.objsReceiveShadow? sceneArgs.objsReceiveShadow : false;
             
             objMesh.material = material;
             objMesh.material.needsUpdate = true;

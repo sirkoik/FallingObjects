@@ -19,6 +19,10 @@
 1. Add more snowflake models.
 
 # Bugs
+1. Loader is white at the beginning when the HDR map is loading. Implement a progress bar.
+2. Scene moves more slowly on slower GPUs. Change animations to align to system clock.
+
+# Possible improvements
 1. Convert equirectangular map to a cubemap. This will enable more customizable HDRI. Instructions at the end of this page:
 https://threejsfundamentals.org/threejs/lessons/threejs-backgrounds.html
 
