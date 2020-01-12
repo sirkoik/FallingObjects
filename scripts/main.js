@@ -23,7 +23,7 @@ window.onload = () => {
         
         debugArgs: {
             basicMaterial: false,
-            enableDAT: true,
+            enableDAT: false,
             debugSphere: true
         }
     });
