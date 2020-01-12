@@ -5,7 +5,7 @@
 * Randomized field of falling objects with independent sizes and orientation / rotation vectors for each object.
 * Re-generation that involves fading an object out and then fading it in again at a new location from above.
 * Custom meshes that are pre-loaded and then cloned at random to generate the field.
-* HDRI IBL background.
+* HDR IBL background.
 * Unreal-style bloom shader.
 * Fully pannable viewport.
 

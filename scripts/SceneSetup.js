@@ -63,7 +63,7 @@ function addBg(callback) {
     
     //console.log(RGBELoader);
     new RGBELoader().setDataType(THREE.UnsignedByteType).load(
-        '../resources/environments/' + bg[0], 
+        './resources/environments/' + bg[0], 
         (hdrEquiRect, textureData) => {
             hdrCubeRenderTarget = pmremGenerator.fromEquirectangular(hdrEquiRect);
             pmremGenerator.compileCubemapShader();
