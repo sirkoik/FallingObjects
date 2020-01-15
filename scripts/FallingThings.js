@@ -1,4 +1,4 @@
-import {scene, animFunctions, THREE, loadObjs2, sceneArgs, debugArgs} from './threeHandler.js';
+import {scene, animFunctions, THREE, loadObjs2, sceneArgs, debugArgs, clock, clockSpeed, clockDelta} from './threeHandler.js';
 import {hdrCubeRenderTarget} from './SceneSetup.js';
 
 export {loadObjects, addLights};
@@ -80,9 +80,13 @@ function addObject(name, mesh) {
     fallingObj.userData.startY = fallingObj.position.y;
     fallingObj.userData.startX = fallingObj.position.x;
     fallingObj.userData.startZ = fallingObj.position.z;
+    
+    fallingObj.userData.randOffsetX = Math.random() * 5;
+    fallingObj.userData.randOffsetZ = Math.random() * 5;
 
     // hard to say if randomizing the sign of each rotational velocity element looks better or not.
-    fallingObj.userData.rotation = [Math.random() * 0.01, Math.random() * 0.01, Math.random() * 0.01];
+    //fallingObj.userData.rotation = [Math.random() * 0.01, Math.random() * 0.01, Math.random() * 0.01];
+    fallingObj.userData.rotation = [randSign() * Math.random() * 0.01, randSign() * Math.random() * 0.01, randSign() * Math.random() * 0.01];
 
     fallingObj.userData.fadingIn = true;
     fallingObj.userData.fadingOut = false;
@@ -90,13 +94,20 @@ function addObject(name, mesh) {
     // animation function for this object.
     let func1 = () => {
         let obj = scene.getObjectByName(name);
-        obj.rotation.x += obj.userData.rotation[0];
-        obj.rotation.y += obj.userData.rotation[1];
-        obj.rotation.z += obj.userData.rotation[2];
+        
+        // TODO need this tied to clockspeed/delta
+        obj.rotation.x += obj.userData.rotation[0] * clockSpeed * clockDelta * 100;//alert(obj.userData.rotation[0] * clockSpeed * clockDelta * 10)
+        obj.rotation.y += obj.userData.rotation[1] * clockSpeed * clockDelta * 100;
+        obj.rotation.z += obj.userData.rotation[2] * clockSpeed * clockDelta * 100;
 
-        obj.position.y -= 0.01;
-        obj.position.x = fallingObj.userData.startX + Math.sin(obj.position.y);
-        obj.position.z = fallingObj.userData.startZ + Math.sin(obj.position.z);
+        //obj.position.y -= 0.01;
+        obj.position.y -= clockSpeed * clockDelta / 2;
+        
+        // Commented out position functions may look better overall, but have bugs that result in jagged downward progression of the snowflakes.
+//        obj.position.x = fallingObj.userData.startX + Math.sin(obj.position.y);
+//        obj.position.z = fallingObj.userData.startZ + Math.sin(obj.position.z);
+        obj.position.x = fallingObj.userData.startX + 0.5 * Math.sin(obj.userData.randOffsetX + clock.elapsedTime / 2);
+        obj.position.z = fallingObj.userData.startZ + 0.5 * Math.sin(obj.userData.randOffsetZ + clock.elapsedTime / 2);
 
         // reset position when it goes offscreen at the bottom.
         // also, fade out at the bottom, and fade in at the top.
@@ -106,7 +117,8 @@ function addObject(name, mesh) {
             //obj.position.y = boxSize;
             //obj.material.opacity = 0;
             //obj.userData.fadingIn = true;
-            obj.material.opacity -= 0.01;
+            //obj.material.opacity -= 0.01;
+            obj.material.opacity -= clockSpeed * clockDelta / 3;
             
             if (obj.material.opacity <= 0) {
                 obj.material.opacity = 0;
@@ -116,7 +128,9 @@ function addObject(name, mesh) {
         }
         
         if (obj.userData.fadingIn == true) {
-            obj.material.opacity += 0.01;
+//            obj.material.opacity += 0.01;
+            obj.material.opacity += clockSpeed * clockDelta / 3;
+            
             if (obj.material.opacity >= maxOpacity) {
                 obj.material.opacity = maxOpacity;
                 obj.userData.fadingIn = false;

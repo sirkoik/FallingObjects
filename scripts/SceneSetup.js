@@ -71,12 +71,14 @@ function addBg(callback) {
             //scene.background = new THREE.Color(0x000000);
             //hdrCubeRenderTarget.mapping = THREE.CubeRefractionMapping;
             renderer.toneMappingExposure = 0.4;
+            
+            document.querySelector('.loading-overlay-container').style.display = 'none';
+            
             callback();
         },
         progressEvent => {
-            // TODO implement progress event.
             let prog = Math.round(progressEvent.lengthComputable? 100 * progressEvent.loaded / progressEvent.total : 0);
-            //console.log(prog);
+            document.querySelector('.load-progress').style.width = prog + '%';
         }
     );
     
