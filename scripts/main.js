@@ -2,6 +2,7 @@ import {load as threeLoad} from './threeHandler.js';
 import {loadObjects, addLights} from './FallingThings.js';
 import {setupScene} from './SceneSetup.js';
 import {addHelpers, addDebugSphere} from './Helpers.js';
+import {attachDomFunctions} from './domElements.js';
 
 window.onload = () => {
     threeLoad({
@@ -40,24 +41,5 @@ window.onload = () => {
     
     //addDebugSphere();
     
-    // HTML elements
-    let menu = document.querySelector('.menu-items');
-    
-    document.querySelector('.burger').addEventListener('click', () => {    
-        menu.style.display = menu.style.display == 'block'? 'none' : 'block';
-    });
-    
-    document.querySelector('.menu-items-about').addEventListener('click', (e) => {
-        e.preventDefault();
-        document.querySelector('.overlay-container').style.display = 'flex';
-        menu.style.display = 'none';
-    });
-    
-    document.querySelector('.overlay-container').addEventListener('click', function() {
-        this.style.display = 'none';
-    });
-    
-    document.querySelector('a').addEventListener('click', function(e) {
-        e.stopPropagation();
-    });    
+    attachDomFunctions();
 };

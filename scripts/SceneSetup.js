@@ -1,5 +1,6 @@
 import {scene, THREE, renderer, pmremGenerator} from './threeHandler.js';
 import {RGBELoader} from '../resources/three.js-r112/examples/jsm/loaders/RGBELoader.js';
+import {setProgress} from './domElements.js';
 
 export {hdrCubeRenderTarget};
 
@@ -62,6 +63,7 @@ function addBg(callback) {
     let bg = envs['snowyForestPath'];
     
     //console.log(RGBELoader);
+    let prevProg = 0;
     new RGBELoader().setDataType(THREE.UnsignedByteType).load(
         './resources/environments/' + bg[0], 
         (hdrEquiRect, textureData) => {
@@ -78,7 +80,10 @@ function addBg(callback) {
         },
         progressEvent => {
             let prog = Math.round(progressEvent.lengthComputable? 100 * progressEvent.loaded / progressEvent.total : 0);
-            document.querySelector('.load-progress').style.width = prog + '%';
+            
+            setProgress(prog-prevProg);
+            prevProg = prog;
+            //document.querySelector('.load-progress').style.width = prog + '%';
         }
     );
     

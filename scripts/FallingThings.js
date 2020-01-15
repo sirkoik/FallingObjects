@@ -157,7 +157,8 @@ function addObjects() {
     const objData = [];
     objInfo.forEach(() => {objData.push({});});  
     
-    loadObjs2(objInfo).then(output => {
+    let progAmount = 100 / (objInfo.length * 3);
+    loadObjs2(objInfo, progAmount).then(output => {
         objInfo.map((obj, index, arr) => {
             let objMesh = obj.mesh.children[0];
             let material = {};

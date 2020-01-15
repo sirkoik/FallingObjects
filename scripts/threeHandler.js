@@ -25,6 +25,8 @@ import {
     GUI
 } from '../resources/three.js-r112/examples/jsm/libs/dat.gui.module.js';
 
+import {setProgress} from './domElements.js';
+
 export {
     THREE
 };
@@ -235,7 +237,7 @@ function loadMap2(path) {
 
 // loadObjs2: Load objects asynchronously with promises, and then 
 // resolve when all promises have fulfilled.
-function loadObjs2(objInfo) {
+function loadObjs2(objInfo, progAmount) {
     return new Promise((resolve, reject) => {
         let promisesSuper = [];
         let promisesFlat = [];
@@ -245,12 +247,15 @@ function loadObjs2(objInfo) {
         objInfo.map((currentValue, index, arr) => {
             let mapPromise = loadMap2(currentValue.map).then(map => {
                 objInfo[index].map = map;
+                setProgress(progAmount);
             });
             let normalMapPromise = loadMap2(currentValue.normalMap).then(normalMap => {
                 objInfo[index].normalMap = normalMap;
+                setProgress(progAmount);
             });
             let meshPromise = loadObj2(currentValue.mesh).then(mesh => {
                 objInfo[index].mesh = mesh;
+                setProgress(progAmount);
             });
 
             // push all promises for this object into a sub-array of the promisesSuper array.
