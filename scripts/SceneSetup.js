@@ -72,7 +72,7 @@ function addBg(callback) {
             //hdrCubeRenderTarget.mapping = THREE.CubeRefractionMapping;
             renderer.toneMappingExposure = 0.4;
             
-            document.querySelector('.loading-overlay-container').style.display = 'none';
+            //document.querySelector('.loading-overlay-container').style.display = 'none';
             
             callback();
         },

@@ -5,6 +5,29 @@
     <title>A snowy day</title>
 
     <style>
+        /*@font-face {
+            font-family: SnowyXmas;
+            src: url("./resources/fonts/merry_christmas/MerryChristmasFlake.ttf");
+        }
+        
+        @font-face {
+            font-family: Oranienbaum;
+            src: url("./resources/fonts/Oranienbaum/Oranienbaum.ttf");
+        }*/
+
+        @font-face {
+            font-family: Foglihten;
+            src: url("./resources/fonts/foglihten/Foglihten-068.otf");
+        }
+        
+        * {
+            font-family: Foglihten;
+        }
+        
+        .title-font, .button {
+/*            font-family: SnowyXmas;*/
+        }
+        
         body {
             margin: 0;
             overflow: hidden;
@@ -12,7 +35,7 @@
 
         .loading-overlay-container {
             position: fixed;
-            z-index: -2;
+            z-index: 100;
 
             top: 0;
             right: 0;
@@ -87,7 +110,7 @@
         }
 
         .overlay-container {
-            /*            z-index: 10;*/
+            z-index: 100;
             cursor: pointer;
 
             display: none;
@@ -108,7 +131,7 @@
             font-size: 3vh;
             background-color: rgba(255, 255, 255, 0.75);
 
-            padding: 1vh;
+            padding: 2vh;
             border-radius: 2vh;
         }
 
@@ -154,7 +177,7 @@
 
     <div class="overlay-container">
         <div class="overlay">
-            <h1>Winter Snow</h1>
+            <h1 class="title-font">Winter Snow</h1>
             Alex Koik-Cestone &bull; 2020
             <p>This is a winter scene in Slovakia, photographed in HDR by <a target="_blank" href="https://hdrihaven.com/hdri/?c=nature&h=snowy_forest_path_02">Oliksiy Yakovlyev</a>. I have added some snow crystals that use magnified images of snowflakes from <a target="_blank" href="https://www.snowcrystals.com">snowcrystals.com</a>.</p>
             
@@ -167,7 +190,7 @@
     </div>
 
     <div class="loading-overlay-container">
-        <div class="loading-overlay">
+        <div class="loading-overlay title-font">
             Loading...
             <div class="load-progress-container mt-5">
                 <div class="load-progress"></div>

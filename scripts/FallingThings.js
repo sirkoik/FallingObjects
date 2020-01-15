@@ -199,6 +199,7 @@ function addObjects() {
             addObject('obj'+x, objSample);
         }
         
-        console.log('scene', scene)
+        document.querySelector('.loading-overlay-container').style.display = 'none';
+        console.log('finished loading objects');
     });
 }
