@@ -53,7 +53,7 @@
             left: 0;
 
             margin: 0;
-/*            background: orange;*/
+            /*            background: orange;*/
         }
 
         div.burger {
@@ -63,7 +63,7 @@
             width: 7vh;
             height: 7vh;
             text-align: center;
-/*            background: green;*/
+            /*            background: green;*/
             margin: 0px;
         }
 
@@ -76,7 +76,7 @@
 
         .menu-items {
             display: none;
-            
+
             float: left;
             line-height: 7vh;
         }
@@ -87,42 +87,47 @@
         }
 
         .overlay-container {
-/*            z-index: 10;*/
+            /*            z-index: 10;*/
             cursor: pointer;
-            
+
             display: none;
             position: fixed;
-            top: 0; right: 0; bottom: 0; left: 0;
-            
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+
             justify-content: center;
             align-items: center;
-            
+
             border-radius: 2vh;
         }
-        
+
         .overlay {
             width: 75%;
             font-size: 3vh;
-            background-color: rgba(255,255,255,0.75);
-            
-            padding: 1vh;border-radius: 2vh;
+            background-color: rgba(255, 255, 255, 0.75);
+
+            padding: 1vh;
+            border-radius: 2vh;
         }
-        
+
         a {
             color: cornflowerblue;
             text-decoration: none;
         }
-        
+
         a.button {
             background: #fff;
             border: 1vh solid cornflowerblue;
             border-radius: 1vh;
             padding: 1vh;
         }
-        
+
         h1 {
             margin: 0vh;
         }
+
     </style>
 
 
@@ -143,7 +148,7 @@
 
 
         <div class="menu-items">
-            <a href="#" class="button menu-items-about">About</a>
+            <a href="/" class="button">Home</a><a href="#" class="button menu-items-about">About</a>
         </div>
     </div>
 
@@ -152,6 +157,11 @@
             <h1>Winter Snow</h1>
             Alex Koik-Cestone &bull; 2020
             <p>This is a winter scene in Slovakia, photographed in HDR by <a target="_blank" href="https://hdrihaven.com/hdri/?c=nature&h=snowy_forest_path_02">Oliksiy Yakovlyev</a>. I have added some snow crystals that use magnified images of snowflakes from <a target="_blank" href="https://www.snowcrystals.com">snowcrystals.com</a>.</p>
+            
+            <p>To pan, simply drag with the mouse cursor or your finger. You can also pinch to zoom.</p>
+            
+            <p>If you don't see any snowflakes or they look bunched up, refresh the page.</p>
+            
             <p style="text-align: center"><a class="button" href="#">Close</a></p>
         </div>
     </div>
