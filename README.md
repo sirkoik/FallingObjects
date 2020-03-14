@@ -1,6 +1,13 @@
 # FallingObjects
  Field of falling THREE.js objects
- 
+
+# Note: envmap lighting branch
+This branch applies environment lighting to the snowflakes by setting scene.environment. It uses envMapIntensity to increase the intensity of the light that the environment casts onto the objects.
+
+I'm not sure if the effect is as good as I was hoping it would be. It seems to make the brightness of the snowflakes more uniform while making their textures harder to see.
+
+The snowflakes do seem to have a bit more color variation.
+
 # Has
 * Randomized field of falling objects with independent sizes and orientation / rotation vectors for each object.
 * Re-generation that involves fading an object out and then fading it in again at a new location from above.

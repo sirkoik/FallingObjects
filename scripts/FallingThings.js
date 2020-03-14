@@ -169,6 +169,7 @@ function addObjects() {
                     map: obj.map,
                     normalMap: obj.normalMap,
                     envMap: hdrCubeRenderTarget.texture,
+                    envMapIntensity: 2,
                     metalness: 0.5,
                     roughness: 0.5,
                     transparent: true, // important for fading in / out

@@ -72,6 +72,10 @@ function addBg(callback) {
             scene.background = hdrCubeRenderTarget.texture;
             //scene.background = new THREE.Color(0x000000);
             //hdrCubeRenderTarget.mapping = THREE.CubeRefractionMapping;
+            
+            // enable environment lighting onto objects by setting scene.environment
+            scene.environment = hdrCubeRenderTarget.texture;
+            
             renderer.toneMappingExposure = 0.4;
             
             //document.querySelector('.loading-overlay-container').style.display = 'none';
