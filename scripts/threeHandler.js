@@ -1,21 +1,32 @@
-import * as THREE from '../resources/three.js-r112/build/three.module.js';
+import {
+    Scene, 
+    PerspectiveCamera, 
+    WebGLRenderer,
+    Clock,
+    Vector2,
+    Vector3,
+    PMREMGenerator,
+    TextureLoader
+} from 'three';
+
+// import * as THREE from '../resources/three.js-r112/build/three.module.js';
 import {
     OrbitControls
-} from '../resources/three.js-r112/examples/jsm/controls/OrbitControls.js';
+} from 'three/examples/jsm/controls/OrbitControls.js';
 import {
-    OBJLoader2
-} from '../resources/three.js-r112/examples/jsm/loaders/OBJLoader2.js';
+    OBJLoader
+} from 'three/examples/jsm/loaders/OBJLoader.js';
 
 // post-processing
 import {
     EffectComposer
-} from '../resources/three.js-r112/examples/jsm/postprocessing/EffectComposer.js';
+} from 'three/examples/jsm/postprocessing/EffectComposer.js';
 import {
     RenderPass
-} from '../resources/three.js-r112/examples/jsm/postprocessing/RenderPass.js';
+} from 'three/examples/jsm/postprocessing/RenderPass.js';
 import {
     UnrealBloomPass
-} from '../resources/three.js-r112/examples/jsm/postprocessing/UnrealBloomPass.js';
+} from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 
 import {
     PointLight
@@ -27,9 +38,9 @@ import {
 
 import {setProgress} from './domElements.js';
 
-export {
-    THREE
-};
+// export {
+//     THREE
+// };
 export {
     load,
     scene,
@@ -60,17 +71,17 @@ let enableAnimation = true;
 let enableDAT = false;
 
 // important for keeping simulation speed the same at lower or higher framerates.
-let clock = new THREE.Clock();
+let clock = new Clock();
 let clockSpeed = 0.5;
 let clockDelta = 0;
 
-let scene = new THREE.Scene();
-let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-let renderer = new THREE.WebGLRenderer({
+let scene = new Scene();
+let camera = new PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+let renderer = new WebGLRenderer({
     antialias: true
 });
 renderer.setPixelRatio(window.devicePixelRatio);
-//renderer.toneMapping = THREE.ReinhardToneMapping;
+//renderer.toneMapping = ReinhardToneMapping;
 
 //let pointLight = new PointLight( 0xffffff, 0.01 );
 //camera.add( pointLight );
@@ -90,7 +101,7 @@ let bloomParams = {
 
 let renderScene = new RenderPass(scene, camera);
 let bloomPass = new UnrealBloomPass(
-    new THREE.Vector2(window.innerWidth, window.innerHeight),
+    new Vector2(window.innerWidth, window.innerHeight),
     0.4,
     0,
     0
@@ -127,7 +138,7 @@ composer.addPass(bloomPass);
 composer.setSize(window.innerWidth, window.innerHeight);
 
 // PMREM Generator for HDR
-let pmremGenerator = new THREE.PMREMGenerator(renderer);
+let pmremGenerator = new PMREMGenerator(renderer);
 pmremGenerator.compileEquirectangularShader();
 
 // Orbit Controls
@@ -148,7 +159,7 @@ function load(args) {
     }
 
     camera.position.set(cameraX, cameraY, cameraZ);
-    camera.lookAt(new THREE.Vector3(0, 0, 0));
+    camera.lookAt(new Vector3(0, 0, 0));
     
     // renderer size and DOM element
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -215,7 +226,7 @@ window.addEventListener('resize', onWindowResize, false);
 // loadObj2: Load an object with OBJLoader2.
 function loadObj2(path) {
     return new Promise(resolve => {
-        const objLoader = new OBJLoader2();
+        const objLoader = new OBJLoader();
         objLoader.load(path, (root) => {
             // TODO do something with the object.
 
@@ -231,7 +242,7 @@ function loadObj2(path) {
 // loadMap2: Load a texture map.
 function loadMap2(path) {
     return new Promise(resolve => {
-        new THREE.TextureLoader().load(path, resolve);
+        new TextureLoader().load(path, resolve);
     });
 }
 

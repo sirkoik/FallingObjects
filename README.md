@@ -1,12 +1,12 @@
 # FallingObjects
- Field of falling THREE.js objects
+ Snowfall
  
 # Has
 * Randomized field of falling objects with independent sizes and orientation / rotation vectors for each object.
 * Re-generation that involves fading an object out and then fading it in again at a new location from above.
 * Custom meshes that are pre-loaded and then cloned at random to generate the field.
 * HDR IBL background.
-* Unreal-style bloom shader.
+* Unreal Engine-style bloom shader.
 * Fully pannable viewport.
 
 # Current tasks
@@ -19,8 +19,8 @@
 1. Add more snowflake models.
 
 # Bugs
-1. Loader is white at the beginning when the HDR map is loading. Implement a progress bar.
-2. Scene moves more slowly on slower GPUs. Change animations to align to system clock.
+1. Scene moves more slowly on slower GPUs. Change animations to align to system clock.
+2. Scene is slow in iOS Safari.
 
 # Possible improvements
 1. Convert equirectangular map to a cubemap. This will enable more customizable HDRI. Instructions at the end of this page:
@@ -31,13 +31,9 @@ https://threejsfundamentals.org/threejs/lessons/threejs-backgrounds.html
 * Randomizing the scale of the snowflakes doesn't seem to make things look much more interesting.
 * Adding one point light dramatically improves the lighting. Adding more may or may not help.
 
-## Installing local server
-ES6 modules don't like running locally with file://. Must use a local server to preview. See https://blogs.msdn.microsoft.com/cdndevs/2016/01/24/visual-studio-code-and-local-web-server/
-
-1. Open command window and type npm install
-2. To use live preview open command window and type npm start
-This will run lite-server.
-Requires that node.js be installed.
+# Updates
+* Updated ThreeJS to r137.
+* ThreeJS modules are now bundled and minified using Rollup. This resolves many security, performance, and compatibility problems that resulted from hosting the library itself in the repository. Based on the <a href="https://github.com/Mugen87/three-jsm">three-jsm</a> repo.
 
 # Credits
 Snow crystal images: www.snowcrystals.com
