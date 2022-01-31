@@ -9,20 +9,15 @@ import {
     SphereBufferGeometry,
     LinearToneMapping
 } from 'three';
-import {scene, renderer, pmremGenerator} from './threeHandler.js';
-import {RGBELoader} from 'three/examples/jsm/loaders/RGBELoader.js';
-import {setProgress} from './domElements.js';
-
-export {hdrCubeRenderTarget};
+import { scene, renderer, pmremGenerator } from './threeHandler.js';
+import { RGBELoader} from 'three/examples/jsm/loaders/RGBELoader.js';
+import { setProgress } from './domElements.js';
+import { HDR_BG, SPHERE_ENVMAP } from './constants/env-constants.js';
 
 // display non-HDR sphere environment map.
 let sphereEnvMap = 0;
 
 let hdrCubeRenderTarget = {};
-
-function addGround() {
-    //loadObj('../resources/models/hills.obj');
-}
 
 function addLights() {
     let light = new AmbientLight(0x404040);
@@ -50,30 +45,10 @@ function addFog() {
     scene.fog = new Fog(color, near, far);
 }
 
-const envs = {
-    'winterForest': [
-        'Winter_Forest/WinterForest_Env.hdr',
-        'Winter_Forest/WinterForest_8k.jpg'
-    ],
-    'snowyPark': [
-        'Snowy_Park/snowy_park_01_1k.hdr',
-        'Snowy_Park/snowy_park_01.jpg'
-    ],
-    'snowyForestPath': [
-//        'Snowy_Forest_Path/snowy_forest_path_02_4k.hdr',
-        'Snowy_Forest_Path/snowy_forest_path_02_2k.hdr',
-//        'Snowy_Forest_Path/snowy_forest_path_02_1k.hdr',
-//        'Snowy_Forest_Path/white.png',
-        'Snowy_Forest_Path/snowy_forest_path_02_e.jpg'
-    ]
-};
-
-function addBg(callback) {
-    let bg = envs['snowyForestPath'];
-    
+function addBg(callback) {    
     let prevProg = 0;
     new RGBELoader().load(
-        './resources/environments/' + bg[0], 
+        HDR_BG,
         (hdrEquiRect, textureData) => {
             hdrCubeRenderTarget = pmremGenerator.fromEquirectangular(hdrEquiRect);
             pmremGenerator.compileCubemapShader();
@@ -87,30 +62,30 @@ function addBg(callback) {
             callback();
         },
         progressEvent => {
-            let prog = Math.round(progressEvent.lengthComputable? 100 * progressEvent.loaded / progressEvent.total : 0);
+            const prog = Math.round(progressEvent.lengthComputable? 100 * progressEvent.loaded / progressEvent.total : 0);
             
-            setProgress(prog-prevProg);
+            setProgress(prog - prevProg);
             prevProg = prog;
         }
     );
     
     // add an environment map sphere that is of higher resolution than that in the RGBELoader.
     if (sphereEnvMap) {
-        let geometry = new SphereBufferGeometry(500, 60, 40);
+        const geometry = new SphereBufferGeometry(500, 60, 40);
         geometry.scale(-1, 1, 1);
 
-        let texture = new TextureLoader().load('./resources/environments/' + bg[1]);
-        let material = new MeshBasicMaterial({map: texture});
-        let mesh = new Mesh(geometry, material);
+        const texture = new TextureLoader().load(SPHERE_ENVMAP);
+        const material = new MeshBasicMaterial({map: texture});
+        const mesh = new Mesh(geometry, material);
         scene.add(mesh);
     }
 }
 
-function setupScene(callback) {
+export function setupScene(callback) {
     addLights();
     addBg(() => {
         callback();
     });
 }
 
-export {setupScene};
+export { hdrCubeRenderTarget };

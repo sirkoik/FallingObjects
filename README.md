@@ -39,8 +39,8 @@ https://threejsfundamentals.org/threejs/lessons/threejs-backgrounds.html
 # Credits
 Snow crystal images: www.snowcrystals.com
 Winter forest (Slovakia): Blochi, http://hdrlabs.com/sibl/archive.html, 
-Snowy park: Oliksiy Yakovlyev, https://hdrihaven.com/hdri/?c=nature&h=snowy_park_01
-Snowy forest path: Oliksiy Yakovlyev, https://hdrihaven.com/hdri/?c=nature&h=snowy_forest_path_02
+Snowy park: Oliksiy Yakovlyev, https://polyhaven.com/a/snowy_park_01
+Snowy forest path: Oliksiy Yakovlyev, https://polyhaven.com/a/snowy_forest_path_02
 
 # References
 1. <a href="https://threejs.org/examples/?q=materials#webgl_materials_cubemap_balls_refraction">WebGL Cube refraction demo</a>
