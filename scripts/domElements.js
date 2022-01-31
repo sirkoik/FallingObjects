@@ -1,4 +1,4 @@
-export {setProgress, attachDomFunctions};
+export { setProgress, attachDomFunctions };
 
 let prog = 0;
 let totalProg = 200;

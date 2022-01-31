@@ -9,38 +9,18 @@ import {
     TextureLoader
 } from 'three';
 
-// import * as THREE from '../resources/three.js-r112/build/three.module.js';
-import {
-    OrbitControls
-} from 'three/examples/jsm/controls/OrbitControls.js';
-import {
-    OBJLoader
-} from 'three/examples/jsm/loaders/OBJLoader.js';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 
 // post-processing
-import {
-    EffectComposer
-} from 'three/examples/jsm/postprocessing/EffectComposer.js';
-import {
-    RenderPass
-} from 'three/examples/jsm/postprocessing/RenderPass.js';
-import {
-    UnrealBloomPass
-} from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 
-import {
-    PointLight
-} from '../resources/three.js-r112/src/lights/PointLight.js';
-
-import {
-    GUI
-} from '../resources/three.js-r112/examples/jsm/libs/dat.gui.module.js';
+// import { GUI } from '../resources/three.js-r112/examples/jsm/libs/dat.gui.module.js';
 
 import {setProgress} from './domElements.js';
 
-// export {
-//     THREE
-// };
 export {
     load,
     scene,
@@ -68,7 +48,6 @@ export {
 let debug = false;
 let sceneArgs, debugArgs = {};
 let enableAnimation = true;
-let enableDAT = false;
 
 // important for keeping simulation speed the same at lower or higher framerates.
 let clock = new Clock();
@@ -81,12 +60,10 @@ let renderer = new WebGLRenderer({
     antialias: true
 });
 renderer.setPixelRatio(window.devicePixelRatio);
-//renderer.toneMapping = ReinhardToneMapping;
+// renderer.toneMapping = ReinhardToneMapping;
 
-//let pointLight = new PointLight( 0xffffff, 0.01 );
-//camera.add( pointLight );
-
-
+// let pointLight = new PointLight( 0xffffff, 0.01 );
+// camera.add( pointLight );
 
 // Composer and mixer for composing bloom post-processing effect
 // UnrealBloomPass bloom pass
@@ -110,26 +87,26 @@ let bloomPass = new UnrealBloomPass(
 
 // DAT.gui for bloomParams
 // courtesy https://threejs.org/examples/webgl_postprocessing_unreal_bloom.html
-function loadDAT() {
-    let gui = new GUI();
+// function loadDAT() {
+//     let gui = new GUI();
 
-    gui.add(bloomParams, 'exposure', 0.1, 2).onChange(function (value) {
-        console.log(Math.pow(value, 4.0));
-        renderer.toneMappingExposure = Math.pow(value, 4.0);
-    });
+//     gui.add(bloomParams, 'exposure', 0.1, 2).onChange(function (value) {
+//         console.log(Math.pow(value, 4.0));
+//         renderer.toneMappingExposure = Math.pow(value, 4.0);
+//     });
 
-    gui.add(bloomParams, 'bloomThreshold', 0.0, 1.0).onChange(function (value) {
-        bloomPass.threshold = Number(value);
-    });
+//     gui.add(bloomParams, 'bloomThreshold', 0.0, 1.0).onChange(function (value) {
+//         bloomPass.threshold = Number(value);
+//     });
 
-    gui.add(bloomParams, 'bloomStrength', 0.0, 3.0).onChange(function (value) {
-        bloomPass.strength = Number(value);
-    });
+//     gui.add(bloomParams, 'bloomStrength', 0.0, 3.0).onChange(function (value) {
+//         bloomPass.strength = Number(value);
+//     });
 
-    gui.add(bloomParams, 'bloomRadius', 0.0, 1.0).step(0.01).onChange(function (value) {
-        bloomPass.radius = Number(value);
-    });
-}
+//     gui.add(bloomParams, 'bloomRadius', 0.0, 1.0).step(0.01).onChange(function (value) {
+//         bloomPass.radius = Number(value);
+//     });
+// }
 
 
 let composer = new EffectComposer(renderer);
@@ -170,11 +147,11 @@ function load(args) {
     if (args.debug) debug = args.debug;
     if (args.debugArgs) {
         debugArgs = args.debugArgs;
-        if (debugArgs.enableDAT !== undefined) enableDAT = debugArgs.enableDAT;
+        // if (debugArgs.enableDAT !== undefined) enableDAT = debugArgs.enableDAT;
     }
 
     // DAT GUI
-    if (enableDAT) loadDAT();
+    // if (enableDAT) loadDAT();
 
     // controls rotate
     if (args.autoRotate) {
@@ -201,8 +178,7 @@ function animate() {
         }
     }
 
-    // render with the composer (compositor?)
-    //renderer.render(scene, camera);
+    // render with the composer
     composer.render();
 }
 
@@ -278,10 +254,8 @@ function loadObjs2(objInfo, progAmount) {
         promisesSuper.map((currentValue, index, arr) => {
             Promise.all(currentValue).then(output => {
                 // TODO add object.
-                //alert('Object fully loaded.');
-                //console.log(output);
 
-                //resolve(output);
+                // resolve(output);
             });
         });
 
@@ -289,7 +263,6 @@ function loadObjs2(objInfo, progAmount) {
         Promise.all(promisesFlat)
             .then(output => {
                 // TODO continue script when object has loaded.
-                //alert('all promises in promise array resolved.');
                 resolve(promisesFlat);
             })
             .catch(error => {

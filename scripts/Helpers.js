@@ -7,16 +7,15 @@ import {
     MeshBasicMaterial,
     Mesh
 } from 'three';
-import {scene} from './threeHandler.js';
-import {hdrCubeRenderTarget} from './SceneSetup.js';
+import { scene } from './threeHandler.js';
 
 function addAxisHelper() {
-    let axesHelper = new AxesHelper( 50 );
-    scene.add( axesHelper );
+    let axesHelper = new AxesHelper(50);
+    scene.add(axesHelper);
     
-    let axesHelper2 = new AxesHelper( 10 );
+    let axesHelper2 = new AxesHelper(10);
     axesHelper2.position.set(10, 5, 10);
-    scene.add( axesHelper2 );    
+    scene.add(axesHelper2);    
 }
 
 function addBoxHelper() {

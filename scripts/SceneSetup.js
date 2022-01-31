@@ -71,7 +71,6 @@ const envs = {
 function addBg(callback) {
     let bg = envs['snowyForestPath'];
     
-    //console.log(RGBELoader);
     let prevProg = 0;
     new RGBELoader().load(
         './resources/environments/' + bg[0], 
@@ -92,7 +91,6 @@ function addBg(callback) {
             
             setProgress(prog-prevProg);
             prevProg = prog;
-            //document.querySelector('.load-progress').style.width = prog + '%';
         }
     );
     
@@ -109,9 +107,7 @@ function addBg(callback) {
 }
 
 function setupScene(callback) {
-    //addGround();
     addLights();
-    //addFog();
     addBg(() => {
         callback();
     });

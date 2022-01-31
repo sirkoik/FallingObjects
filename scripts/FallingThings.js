@@ -3,10 +3,19 @@ import {
     MeshStandardMaterial,
     PointLight,
 } from 'three';
-import {scene, animFunctions, loadObjs2, sceneArgs, debugArgs, clock, clockSpeed, clockDelta} from './threeHandler.js';
-import {hdrCubeRenderTarget} from './SceneSetup.js';
+import { 
+    scene, 
+    animFunctions, 
+    loadObjs2, 
+    sceneArgs, 
+    debugArgs, 
+    clock, 
+    clockSpeed, 
+    clockDelta
+} from './threeHandler.js';
+import { hdrCubeRenderTarget } from './SceneSetup.js';
 
-export {loadObjects, addLights};
+export { loadObjects, addLights };
 
 let objPrototypes = [];
 let boxSize = 20;
@@ -79,7 +88,7 @@ function addObject(name, mesh) {
     // start at a random x, y, z position within the box.
     fallingObj.position.x = sign * Math.random() * boxSize; //window.innerWidth / 2;
     fallingObj.position.z = sign2 * Math.random() * boxSize; //window.innerWidth / 2;
-    //fallingObj.position.y = 10 + 10 * Math.random();
+    // fallingObj.position.y = 10 + 10 * Math.random();
     fallingObj.position.y = sign3 * boxSize * Math.random();
 
     fallingObj.userData.startY = fallingObj.position.y;
@@ -90,7 +99,7 @@ function addObject(name, mesh) {
     fallingObj.userData.randOffsetZ = Math.random() * 5;
 
     // hard to say if randomizing the sign of each rotational velocity element looks better or not.
-    //fallingObj.userData.rotation = [Math.random() * 0.01, Math.random() * 0.01, Math.random() * 0.01];
+    // fallingObj.userData.rotation = [Math.random() * 0.01, Math.random() * 0.01, Math.random() * 0.01];
     fallingObj.userData.rotation = [randSign() * Math.random() * 0.01, randSign() * Math.random() * 0.01, randSign() * Math.random() * 0.01];
 
     fallingObj.userData.fadingIn = true;
@@ -105,19 +114,19 @@ function addObject(name, mesh) {
         obj.rotation.y += obj.userData.rotation[1] * clockSpeed * clockDelta * 100;
         obj.rotation.z += obj.userData.rotation[2] * clockSpeed * clockDelta * 100;
 
-        //obj.position.y -= 0.01;
+        // obj.position.y -= 0.01;
         obj.position.y -= clockSpeed * clockDelta / 2;
         
         // Commented out position functions may look better overall, but have bugs that result in jagged downward progression of the snowflakes.
-//        obj.position.x = fallingObj.userData.startX + Math.sin(obj.position.y);
-//        obj.position.z = fallingObj.userData.startZ + Math.sin(obj.position.z);
+        // obj.position.x = fallingObj.userData.startX + Math.sin(obj.position.y);
+        // obj.position.z = fallingObj.userData.startZ + Math.sin(obj.position.z);
         obj.position.x = fallingObj.userData.startX + 0.5 * Math.sin(obj.userData.randOffsetX + clock.elapsedTime / 2);
         obj.position.z = fallingObj.userData.startZ + 0.5 * Math.sin(obj.userData.randOffsetZ + clock.elapsedTime / 2);
 
         // reset position when it goes offscreen at the bottom.
         // also, fade out at the bottom, and fade in at the top.
-        //if (obj.position.y < -window.innerHeight / 2) obj.position.y = - window.innerHeight / 2;
-        //if (obj.position.y < -10) obj.position.y = obj.userData.startY;
+        // if (obj.position.y < -window.innerHeight / 2) obj.position.y = - window.innerHeight / 2;
+        // if (obj.position.y < -10) obj.position.y = obj.userData.startY;
         if (obj.position.y < -boxSize) {
             //obj.position.y = boxSize;
             //obj.material.opacity = 0;
@@ -133,7 +142,7 @@ function addObject(name, mesh) {
         }
         
         if (obj.userData.fadingIn == true) {
-//            obj.material.opacity += 0.01;
+            // obj.material.opacity += 0.01;
             obj.material.opacity += clockSpeed * clockDelta / 3;
             
             if (obj.material.opacity >= maxOpacity) {
@@ -145,9 +154,6 @@ function addObject(name, mesh) {
     
     // TODO maybe just attach the anim function to the object's userData.
     animFunctions.push(func1);
-
-    //console.log(cube);
-    //console.log(scene);
 }
 
 // addLights: Add some lights. Not in use at the moment.
@@ -178,14 +184,7 @@ function addObjects() {
                     roughness: 0.5,
                     transparent: true, // important for fading in / out
                     opacity: 0 // start out invisible, then fade in.
-                });       
-// This doesn't work for some reason.                
-//                material = new THREE.MeshPhongMaterial({
-//                    color: 0xffffff,
-//                    envMap: hdrCubeRenderTarget.texture,
-//                    refractionRatio: 0.98,
-//                    reflectivity: 0.8
-//                });
+                });
             }
             
             // will this object receive shadows cast by other objects from the light?
@@ -200,12 +199,10 @@ function addObjects() {
         
         // select objects at random from the prototypes array.
         for (let x = 0; x < objCount; x++) {
-            let objSample = objPrototypes[Math.floor(Math.random() * objPrototypes.length)]
-            //console.log(Math.round(Math.random() * objPrototypes.length));
+            let objSample = objPrototypes[Math.floor(Math.random() * objPrototypes.length)];
             addObject('obj'+x, objSample);
         }
         
         document.querySelector('.loading-overlay-container').style.display = 'none';
-        console.log('finished loading objects');
     });
 }

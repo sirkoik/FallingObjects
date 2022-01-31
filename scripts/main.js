@@ -1,8 +1,8 @@
-import {load as threeLoad} from './threeHandler.js';
-import {loadObjects, addLights} from './FallingThings.js';
-import {setupScene} from './SceneSetup.js';
-import {addHelpers, addDebugSphere} from './Helpers.js';
-import {attachDomFunctions} from './domElements.js';
+import { load as threeLoad } from './threeHandler.js';
+import { loadObjects, addLights } from './FallingThings.js';
+import { setupScene } from './SceneSetup.js';
+import { addHelpers } from './Helpers.js';
+import { attachDomFunctions } from './domElements.js';
 
 window.onload = () => {
     threeLoad({
