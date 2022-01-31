@@ -2,3 +2,5 @@ node_modules/
 RebuildPage.bat
 package.json
 package-lock.json
+.vscode
+resources/three.js*
