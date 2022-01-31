@@ -1,21 +1,30 @@
-import {THREE, scene} from './threeHandler.js';
+import {
+    AxesHelper,
+    LineSegments,
+    BoxGeometry,
+    WireframeGeometry,
+    SphereGeometry,
+    MeshBasicMaterial,
+    Mesh
+} from 'three';
+import {scene} from './threeHandler.js';
 import {hdrCubeRenderTarget} from './SceneSetup.js';
 
 function addAxisHelper() {
-    let axesHelper = new THREE.AxesHelper( 50 );
+    let axesHelper = new AxesHelper( 50 );
     scene.add( axesHelper );
     
-    let axesHelper2 = new THREE.AxesHelper( 10 );
+    let axesHelper2 = new AxesHelper( 10 );
     axesHelper2.position.set(10, 5, 10);
     scene.add( axesHelper2 );    
 }
 
 function addBoxHelper() {
     let size = 20;
-    let geometry = new THREE.BoxGeometry(size, size, size);
-    let wireframe = new THREE.WireframeGeometry(geometry);
+    let geometry = new BoxGeometry(size, size, size);
+    let wireframe = new WireframeGeometry(geometry);
     
-    let line = new THREE.LineSegments(wireframe);
+    let line = new LineSegments(wireframe);
     line.material.depthTest = false;
     line.material.opacity = 0.25;
     line.material.transparent = true;
@@ -30,8 +39,8 @@ function addHelpers() {
 
 function addDebugSphere() {
     let size = 20;
-    let geometry = new THREE.SphereGeometry(size, size, size);
-    let material = new THREE.MeshBasicMaterial({color: 0xffffff});
+    let geometry = new SphereGeometry(size, size, size);
+    let material = new MeshBasicMaterial({color: 0xffffff});
     
 //    let material = new THREE.MeshStandardMaterial({
 //        envMap: hdrCubeRenderTarget.texture,
@@ -41,7 +50,7 @@ function addDebugSphere() {
 //        opacity: 1 // start out invisible, then fade in.
 //    });
     
-    let mesh = new THREE.Mesh(geometry, material);
+    let mesh = new Mesh(geometry, material);
     console.log(mesh);
     scene.add(mesh);
 }

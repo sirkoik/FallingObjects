@@ -1,5 +1,16 @@
-import {scene, THREE, renderer, pmremGenerator} from './threeHandler.js';
-import {RGBELoader} from '../resources/three.js-r112/examples/jsm/loaders/RGBELoader.js';
+import {
+    AmbientLight,
+    Color,
+    PointLight,
+    Fog,
+    TextureLoader,
+    MeshBasicMaterial,
+    Mesh,
+    SphereBufferGeometry,
+    LinearToneMapping
+} from 'three';
+import {scene, renderer, pmremGenerator} from './threeHandler.js';
+import {RGBELoader} from 'three/examples/jsm/loaders/RGBELoader.js';
 import {setProgress} from './domElements.js';
 
 export {hdrCubeRenderTarget};
@@ -14,17 +25,17 @@ function addGround() {
 }
 
 function addLights() {
-    let light = new THREE.AmbientLight(0x404040);
+    let light = new AmbientLight(0x404040);
     scene.add(light);
     
-    scene.background = new THREE.Color(0xffffff);
+    scene.background = new Color(0xffffff);
     
     // pointLight to illuminate snowflakes.
     // this is critical to making the scene look really nice.
     // Not sure whether positioning the light toward the sunlight in the HDR or at the origin looks better.
     // Positioning toward the sunlight is more realistic but makes the snowflakes look darker.
     // Positioning toward the origin might still be realistic because of the way ice refracts light.
-    let pointLight = new THREE.PointLight(0xffffff, 5);
+    let pointLight = new PointLight(0xffffff, 5);
     //pointLight.position.set(10, 5, 10);
     //pointLight.castShadow = true;
     scene.add(pointLight);
@@ -36,7 +47,7 @@ function addFog() {
     const color = 0xffffff;
     const near = 5;
     const far = 20;
-    scene.fog = new THREE.Fog(color, near, far);
+    scene.fog = new Fog(color, near, far);
 }
 
 const envs = {
@@ -57,24 +68,22 @@ const envs = {
     ]
 };
 
-
-
 function addBg(callback) {
     let bg = envs['snowyForestPath'];
     
     //console.log(RGBELoader);
     let prevProg = 0;
-    new RGBELoader().setDataType(THREE.UnsignedByteType).load(
+    new RGBELoader().load(
         './resources/environments/' + bg[0], 
         (hdrEquiRect, textureData) => {
             hdrCubeRenderTarget = pmremGenerator.fromEquirectangular(hdrEquiRect);
             pmremGenerator.compileCubemapShader();
             scene.background = hdrCubeRenderTarget.texture;
-            //scene.background = new THREE.Color(0x000000);
-            //hdrCubeRenderTarget.mapping = THREE.CubeRefractionMapping;
+
+            // set tone mapping to linear tone mapping
+            // https://discourse.threejs.org/t/tonemappingexposure-not-working-on-r120/18503/2
+            renderer.toneMapping = LinearToneMapping;
             renderer.toneMappingExposure = 0.4;
-            
-            //document.querySelector('.loading-overlay-container').style.display = 'none';
             
             callback();
         },
@@ -89,15 +98,14 @@ function addBg(callback) {
     
     // add an environment map sphere that is of higher resolution than that in the RGBELoader.
     if (sphereEnvMap) {
-        let geometry = new THREE.SphereBufferGeometry(500, 60, 40);
+        let geometry = new SphereBufferGeometry(500, 60, 40);
         geometry.scale(-1, 1, 1);
 
-        let texture = new THREE.TextureLoader().load('./resources/environments/' + bg[1]);
-        let material = new THREE.MeshBasicMaterial({map: texture});
-        let mesh = new THREE.Mesh(geometry, material);
+        let texture = new TextureLoader().load('./resources/environments/' + bg[1]);
+        let material = new MeshBasicMaterial({map: texture});
+        let mesh = new Mesh(geometry, material);
         scene.add(mesh);
     }
-
 }
 
 function setupScene(callback) {

@@ -1,4 +1,9 @@
-import {scene, animFunctions, THREE, loadObjs2, sceneArgs, debugArgs, clock, clockSpeed, clockDelta} from './threeHandler.js';
+import {
+    MeshBasicMaterial,
+    MeshStandardMaterial,
+    PointLight,
+} from 'three';
+import {scene, animFunctions, loadObjs2, sceneArgs, debugArgs, clock, clockSpeed, clockDelta} from './threeHandler.js';
 import {hdrCubeRenderTarget} from './SceneSetup.js';
 
 export {loadObjects, addLights};
@@ -57,7 +62,7 @@ function addObject(name, mesh) {
 //    let fallingObj = new THREE.Mesh(geometry, material);
     
     let fallingObj = mesh.clone();
-    fallingObj.material = new THREE.MeshStandardMaterial().copy(fallingObj.material);
+    fallingObj.material = new MeshStandardMaterial().copy(fallingObj.material);
     
     let baseScale = sceneArgs.baseScale? sceneArgs.baseScale : 0.12;
     let randScale = (baseScale / 4) * Math.random();
@@ -147,7 +152,7 @@ function addObject(name, mesh) {
 
 // addLights: Add some lights. Not in use at the moment.
 function addLights() {
-    var light = new THREE.PointLight( 0xff0000, 1, 100 );
+    var light = new PointLight( 0xff0000, 1, 100 );
     light.position.set( 50, 50, 50 );
     scene.add( light );    
 }
@@ -163,9 +168,9 @@ function addObjects() {
             let objMesh = obj.mesh.children[0];
             let material = {};
             if (debugArgs.basicMaterial) {
-                material = new THREE.MeshBasicMaterial({map: obj.map});
+                material = new MeshBasicMaterial({map: obj.map});
             } else {
-                material = new THREE.MeshStandardMaterial({
+                material = new MeshStandardMaterial({
                     map: obj.map,
                     normalMap: obj.normalMap,
                     envMap: hdrCubeRenderTarget.texture,
