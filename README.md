@@ -1,5 +1,6 @@
 # FallingObjects
- Snowfall
+ Snowflakes falling in a snowy scene.
+
  
 # Has
 * Randomized field of falling objects with independent sizes and orientation / rotation vectors for each object.
