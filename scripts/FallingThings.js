@@ -14,6 +14,7 @@ import {
     clockDelta
 } from './threeHandler.js';
 import { hdrCubeRenderTarget } from './SceneSetup.js';
+import { objInfo } from './constants/obj-constants.js';
 
 export { loadObjects, addLights };
 
@@ -21,34 +22,6 @@ let objPrototypes = [];
 let boxSize = 20;
 let objCount = 500;
 let maxOpacity = 0.8;
-
-// object info, such as meshes, textures, etc.
-const objInfo = [
-    {
-        name: 'Snowflake1',
-        mesh: './resources/models/snowflake.obj',
-        map: './resources/images/snowflake1.png',
-        normalMap: './resources/images/snowflake1-normal.png'
-    },
-    {
-        name: 'Snowflake2',
-        mesh: './resources/models/snowflake2.obj',
-        map: './resources/images/libbrecht.snowflake2.jpg',
-        normalMap: './resources/images/libbrecht.snowflake2-normal.jpg'
-    },
-    {
-        name: 'Snowflake3',
-        mesh: './resources/models/snowflake3.obj',
-        map: './resources/images/snowflake4.jpg',
-        normalMap: './resources/images/snowflake4-normal.jpg'
-    },
-    {
-        name: 'Snowflake4',
-        mesh: './resources/models/snowflake4.obj',
-        map: './resources/images/snowflake3.jpg',
-        normalMap: './resources/images/snowflake3-normal.jpg'
-    }
-];
 
 // loadObjects: load all the objects
 function loadObjects(args) {
