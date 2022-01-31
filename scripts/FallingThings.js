@@ -6,25 +6,24 @@ import {
 import { 
     scene, 
     animFunctions, 
-    loadObjs2, 
     sceneArgs, 
     debugArgs, 
     clock, 
     clockSpeed, 
     clockDelta
 } from './threeHandler.js';
+import { loadObjs2 } from './loaders.js';
 import { hdrCubeRenderTarget } from './SceneSetup.js';
 import { objInfo } from './constants/obj-constants.js';
+import { hideOverlay } from './domElements.js';
 
-export { loadObjects, addLights };
-
-let objPrototypes = [];
+const objPrototypes = [];
 let boxSize = 20;
 let objCount = 500;
 let maxOpacity = 0.8;
 
 // loadObjects: load all the objects
-function loadObjects(args) {
+export const loadObjects = (args) => {
     if (args && args.boxSize) boxSize = args.boxSize;
     if (args && args.objCount) objCount = args.objCount;
     if (args && args.maxOpacity) objCount = args.maxOpacity;
@@ -33,30 +32,28 @@ function loadObjects(args) {
 }
 
 // randSign: return a random numerical sign.
-function randSign() {
-    return Math.random() >= 0.5? 1: -1;
-}
+const randSign = () => Math.random() >= 0.5? 1: -1;
 
 // addObject: add a single object to the scene, with its own unique mesh, texture, and animation function.
 function addObject(name, mesh) {
-//    let geometry = new THREE.BoxGeometry(1, 1, 1);
-//    let material = new THREE.MeshBasicMaterial({color: 0x00ff00});
-//    let fallingObj = new THREE.Mesh(geometry, material);
+    // const geometry = new THREE.BoxGeometry(1, 1, 1);
+    // const material = new THREE.MeshBasicMaterial({color: 0x00ff00});
+    // const fallingObj = new THREE.Mesh(geometry, material);
     
-    let fallingObj = mesh.clone();
+    const fallingObj = mesh.clone();
     fallingObj.material = new MeshStandardMaterial().copy(fallingObj.material);
     
-    let baseScale = sceneArgs.baseScale? sceneArgs.baseScale : 0.12;
-    let randScale = (baseScale / 4) * Math.random();
+    const baseScale = sceneArgs.baseScale? sceneArgs.baseScale : 0.12;
+    const randScale = (baseScale / 4) * Math.random();
     fallingObj.scale.set(baseScale - randScale, baseScale - randScale, baseScale - randScale);
     
     fallingObj.name = name;
     scene.add(fallingObj);
 
     // random x position constrained within window.
-    let sign  = randSign();
-    let sign2 = randSign();
-    let sign3 = randSign();
+    const sign  = randSign();
+    const sign2 = randSign();
+    const sign3 = randSign();
     
     // start at a random x, y, z position within the box.
     fallingObj.position.x = sign * Math.random() * boxSize; //window.innerWidth / 2;
@@ -79,11 +76,11 @@ function addObject(name, mesh) {
     fallingObj.userData.fadingOut = false;
         
     // animation function for this object.
-    let func1 = () => {
+    const func1 = () => {
         let obj = scene.getObjectByName(name);
         
         // TODO need this tied to clockspeed/delta
-        obj.rotation.x += obj.userData.rotation[0] * clockSpeed * clockDelta * 100;//alert(obj.userData.rotation[0] * clockSpeed * clockDelta * 10)
+        obj.rotation.x += obj.userData.rotation[0] * clockSpeed * clockDelta * 100;
         obj.rotation.y += obj.userData.rotation[1] * clockSpeed * clockDelta * 100;
         obj.rotation.z += obj.userData.rotation[2] * clockSpeed * clockDelta * 100;
 
@@ -130,7 +127,7 @@ function addObject(name, mesh) {
 }
 
 // addLights: Add some lights. Not in use at the moment.
-function addLights() {
+export const addLights = () => {
     var light = new PointLight( 0xff0000, 1, 100 );
     light.position.set( 50, 50, 50 );
     scene.add( light );    
@@ -144,7 +141,7 @@ function addObjects() {
     let progAmount = 100 / (objInfo.length * 3);
     loadObjs2(objInfo, progAmount).then(output => {
         objInfo.map((obj, index, arr) => {
-            let objMesh = obj.mesh.children[0];
+            const objMesh = obj.mesh.children[0];
             let material = {};
             if (debugArgs.basicMaterial) {
                 material = new MeshBasicMaterial({map: obj.map});
@@ -172,10 +169,10 @@ function addObjects() {
         
         // select objects at random from the prototypes array.
         for (let x = 0; x < objCount; x++) {
-            let objSample = objPrototypes[Math.floor(Math.random() * objPrototypes.length)];
+            const objSample = objPrototypes[Math.floor(Math.random() * objPrototypes.length)];
             addObject('obj'+x, objSample);
         }
         
-        document.querySelector('.loading-overlay-container').style.display = 'none';
+        hideOverlay();
     });
 }
